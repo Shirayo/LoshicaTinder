@@ -21,7 +21,7 @@ class ViewController: UIViewController {
     
     //MARK: FilePripate
     
-    func setupCards() {
+    fileprivate func setupCards() {
         let cardView = CardView(frame: .zero)
         cardsDeckView.addSubview(cardView)
         cardView.fillSuperView()
