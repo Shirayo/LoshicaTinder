@@ -11,6 +11,9 @@ class CardView: UIView {
 
     fileprivate let imageView = UIImageView(image: UIImage(named: "pizza"))
     fileprivate let border = 150
+    var informationLabel = UILabel()
+    
+    
     
     override init(frame: CGRect) {
         super .init(frame: frame)
@@ -18,11 +21,17 @@ class CardView: UIView {
         addSubview(imageView)
         imageView.fillSuperView()
         clipsToBounds = true
-        layer.cornerRadius = 10
-        
+        layer.cornerRadius = 1
+        imageView.addSubview(informationLabel)
+        informationLabel.numberOfLines = 0
+        informationLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
         
+    }
+    
+    func setImage(from image: String) {
+        imageView.image = UIImage(named: image)
     }
     
     @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
@@ -46,23 +55,17 @@ class CardView: UIView {
     
     fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
         let shouldDismissCard = Int(abs(gesture.translation(in: nil).x)) > border
-        UIView.animate(withDuration: 0.75 , delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+        let translationDirection: CGFloat = gesture.translation(in: nil).x > 0 ? 1 : -1
+        
+        UIView.animate(withDuration: 0.4 , delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
             if shouldDismissCard {
-                if gesture.translation(in: nil).x > 0 {
-                    self.transform = CGAffineTransform(translationX: 1000, y: 0)
-                } else {
-                    self.transform = CGAffineTransform(translationX: -1000, y: 0)
-                }
+                self.transform = CGAffineTransform(translationX: 600 * translationDirection, y: 0)
             } else {
                 self.transform = .identity
             }
         } completion: { (_) in
             print("completed animation")
-            self.transform = .identity
-            self.frame = CGRect(x: 0, y: 0,
-                                width: self.superview!.frame.width,
-                                height: self.superview!.frame.height
-            )
+//            self.transform = .identity
         }
     }
     
