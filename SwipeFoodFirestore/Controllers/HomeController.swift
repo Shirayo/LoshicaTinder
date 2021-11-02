@@ -12,10 +12,10 @@ class HomeController: UIViewController {
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let buttonsStackView = HomeBottomControlsStackView()
-
-    let users = [
-        User(name: "pizza", age: 18, profession: "tasty peperony", imageName: "pizza"),
-        User(name: "donut", age: 23, profession: "yummy chocolate", imageName: "donut")
+    
+    let cardViewModels = [
+        User(name: "Pizza", age: 18, profession: "tasty peperony", imageName: "pizza").toCardView(),
+        User(name: "Donut", age: 23, profession: "yummy chocolate", imageName: "donut").toCardView()
     ]
     
     
@@ -29,15 +29,11 @@ class HomeController: UIViewController {
     //MARK: FilePripate
     
     fileprivate func setupCards() {
-        users.forEach { (user) in
+        cardViewModels.forEach { cardVM in
             let cardView = CardView(frame: .zero)
-            cardView.setImage(from: user.imageName)
-            
-            var information = NSMutableAttributedString(string: user.name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
-            information.append(NSAttributedString(string: "  \(user.age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
-            information.append(NSAttributedString(string: "\n\(user.profession)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
-            cardView.informationLabel.textColor = .white
-            cardView.informationLabel.attributedText = information
+            cardView.setImage(from: cardVM.imageName)
+            cardView.informationLabel.attributedText = cardVM.attibuterdText
+            cardView.informationLabel.textAlignment = cardVM.textAligment
             cardsDeckView.addSubview(cardView)
             cardView.fillSuperView()
         }

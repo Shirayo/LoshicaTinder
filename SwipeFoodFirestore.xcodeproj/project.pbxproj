@@ -18,6 +18,7 @@
 		82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */; };
 		82BE12CF2729565E00DDE023 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CE2729565E00DDE023 /* CardView.swift */; };
 		82E70E8D27301A4300F6A8A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E8C27301A4300F6A8A7 /* User.swift */; };
+		82E70E912731168A00F6A8A7 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E902731168A00F6A8A7 /* CardViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		82BE12CE2729565E00DDE023 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		82E70E8C27301A4300F6A8A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		82E70E902731168A00F6A8A7 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,12 +68,13 @@
 		827FF1CE2727FAB3007E6B84 /* SwipeFoodFirestore */ = {
 			isa = PBXGroup;
 			children = (
+				82E70E8F2731167100F6A8A7 /* ViewModels */,
 				82E70E8B27301A3200F6A8A7 /* Model */,
 				82BE12C927292ACC00DDE023 /* Views */,
+				82E70E8E2731155400F6A8A7 /* Controllers */,
 				827FF1E327280230007E6B84 /* Extensions */,
 				827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */,
 				827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */,
-				827FF1D32727FAB3007E6B84 /* HomeController.swift */,
 				827FF1D52727FAB3007E6B84 /* Main.storyboard */,
 				827FF1D82727FAB5007E6B84 /* Assets.xcassets */,
 				827FF1DA2727FAB5007E6B84 /* LaunchScreen.storyboard */,
@@ -104,6 +107,22 @@
 				82E70E8C27301A4300F6A8A7 /* User.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		82E70E8E2731155400F6A8A7 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				827FF1D32727FAB3007E6B84 /* HomeController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		82E70E8F2731167100F6A8A7 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				82E70E902731168A00F6A8A7 /* CardViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,6 +204,7 @@
 				82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */,
 				827FF1E527283BF2007E6B84 /* Extensions+UIView.swift in Sources */,
 				827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */,
+				82E70E912731168A00F6A8A7 /* CardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

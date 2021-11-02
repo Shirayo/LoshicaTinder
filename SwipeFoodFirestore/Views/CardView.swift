@@ -24,6 +24,7 @@ class CardView: UIView {
         layer.cornerRadius = 1
         imageView.addSubview(informationLabel)
         informationLabel.numberOfLines = 0
+        informationLabel.textColor = .white
         informationLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         addGestureRecognizer(panGesture)
