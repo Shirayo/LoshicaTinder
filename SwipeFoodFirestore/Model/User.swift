@@ -14,7 +14,7 @@ struct User: ProdusesCardViewModel {
     let name: String
     let age: Int
     let profession: String
-    let imageName: String
+    let imageNames: [String]
     
     func toCardViewModel() -> CardViewModel{
         
@@ -22,6 +22,6 @@ struct User: ProdusesCardViewModel {
         information.append(NSAttributedString(string: "  \(age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
         information.append(NSAttributedString(string: "\n\(profession)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
 
-        return CardViewModel(imageName: imageName, attibuterdText: information, textAligment: .left)
+        return CardViewModel(imageNames: imageNames, attibuterdText: information, textAligment: .left)
     }
 }

@@ -23,7 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		827FF1CC2727FAB3007E6B84 /* SwipeFoodFirestore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwipeFoodFirestore.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoshicaTinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		827FF1D32727FAB3007E6B84 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		827FF1CD2727FAB3007E6B84 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				827FF1CC2727FAB3007E6B84 /* SwipeFoodFirestore.app */,
+				827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,9 +131,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		827FF1CB2727FAB3007E6B84 /* SwipeFoodFirestore */ = {
+		827FF1CB2727FAB3007E6B84 /* LoshicaTinder */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 827FF1E02727FAB5007E6B84 /* Build configuration list for PBXNativeTarget "SwipeFoodFirestore" */;
+			buildConfigurationList = 827FF1E02727FAB5007E6B84 /* Build configuration list for PBXNativeTarget "LoshicaTinder" */;
 			buildPhases = (
 				827FF1C82727FAB3007E6B84 /* Sources */,
 				827FF1C92727FAB3007E6B84 /* Frameworks */,
@@ -143,9 +143,9 @@
 			);
 			dependencies = (
 			);
-			name = SwipeFoodFirestore;
+			name = LoshicaTinder;
 			productName = SwipeFoodFirestore;
-			productReference = 827FF1CC2727FAB3007E6B84 /* SwipeFoodFirestore.app */;
+			productReference = 827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -163,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 827FF1C72727FAB2007E6B84 /* Build configuration list for PBXProject "SwipeFoodFirestore" */;
+			buildConfigurationList = 827FF1C72727FAB2007E6B84 /* Build configuration list for PBXProject "LoshicaTinder" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -176,7 +176,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				827FF1CB2727FAB3007E6B84 /* SwipeFoodFirestore */,
+				827FF1CB2727FAB3007E6B84 /* LoshicaTinder */,
 			);
 		};
 /* End PBXProject section */
@@ -360,6 +360,7 @@
 				DEVELOPMENT_TEAM = DB6K9AT64H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwipeFoodFirestore/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LoshicaTinder;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -370,7 +371,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Shirayo.SwipeFoodFirestore;
+				PRODUCT_BUNDLE_IDENTIFIER = Shirayo.LoshicaTinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -388,6 +389,7 @@
 				DEVELOPMENT_TEAM = DB6K9AT64H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SwipeFoodFirestore/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LoshicaTinder;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -398,7 +400,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Shirayo.SwipeFoodFirestore;
+				PRODUCT_BUNDLE_IDENTIFIER = Shirayo.LoshicaTinder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -409,7 +411,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		827FF1C72727FAB2007E6B84 /* Build configuration list for PBXProject "SwipeFoodFirestore" */ = {
+		827FF1C72727FAB2007E6B84 /* Build configuration list for PBXProject "LoshicaTinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				827FF1DE2727FAB5007E6B84 /* Debug */,
@@ -418,7 +420,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		827FF1E02727FAB5007E6B84 /* Build configuration list for PBXNativeTarget "SwipeFoodFirestore" */ = {
+		827FF1E02727FAB5007E6B84 /* Build configuration list for PBXNativeTarget "LoshicaTinder" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				827FF1E12727FAB5007E6B84 /* Debug */,
