@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct User {
+struct User: ProdusesCardViewModel {
     
     //defining properties for our model layer
     
@@ -16,8 +16,7 @@ struct User {
     let profession: String
     let imageName: String
     
-    
-    func toCardView() -> CardViewModel{
+    func toCardViewModel() -> CardViewModel{
         
         let information = NSMutableAttributedString(string: name, attributes: [.font: UIFont.systemFont(ofSize: 32, weight: .heavy)])
         information.append(NSAttributedString(string: "  \(age)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
