@@ -54,7 +54,7 @@
 		827FF1C32727FAB2007E6B84 = {
 			isa = PBXGroup;
 			children = (
-				827FF1CE2727FAB3007E6B84 /* SwipeFoodFirestore */,
+				827FF1CE2727FAB3007E6B84 /* LoshicaTinder */,
 				827FF1CD2727FAB3007E6B84 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -67,7 +67,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		827FF1CE2727FAB3007E6B84 /* SwipeFoodFirestore */ = {
+		827FF1CE2727FAB3007E6B84 /* LoshicaTinder */ = {
 			isa = PBXGroup;
 			children = (
 				82E70E8F2731167100F6A8A7 /* ViewModels */,
@@ -82,7 +82,7 @@
 				827FF1DA2727FAB5007E6B84 /* LaunchScreen.storyboard */,
 				827FF1DD2727FAB5007E6B84 /* Info.plist */,
 			);
-			path = SwipeFoodFirestore;
+			path = LoshicaTinder;
 			sourceTree = "<group>";
 		};
 		827FF1E327280230007E6B84 /* Extensions */ = {
@@ -359,7 +359,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DB6K9AT64H;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SwipeFoodFirestore/Info.plist;
+				INFOPLIST_FILE = LoshicaTinder/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LoshicaTinder;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -388,7 +388,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DB6K9AT64H;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SwipeFoodFirestore/Info.plist;
+				INFOPLIST_FILE = LoshicaTinder/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LoshicaTinder;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

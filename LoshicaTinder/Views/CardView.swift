@@ -10,8 +10,7 @@ import UIKit
 class CardView: UIView {
 
     fileprivate let border = 150
-    fileprivate let rightTapView = UIView()
-    fileprivate let leftTapView = UIView()
+    fileprivate let diselectedBarColor = UIColor(white: 0.5, alpha: 1.1)
     fileprivate let imageView = UIImageView(image: UIImage(named: "pizza"))
     fileprivate let gradientLayer = CAGradientLayer()
     fileprivate let informationLabel = UILabel()
@@ -27,7 +26,7 @@ class CardView: UIView {
             informationLabel.textAlignment = cardViewModel.textAligment
             (0..<cardViewModel.imageNames.count).forEach { (_) in
                 let barView = UIView()
-                barView.backgroundColor = UIColor(white: 0, alpha: 0.2)
+                barView.backgroundColor = diselectedBarColor
                 barView.layer.cornerRadius = 2
                 barStackView.addArrangedSubview(barView)
             }
@@ -39,27 +38,17 @@ class CardView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(rightTapView)
-        addSubview(leftTapView)
-        
         setupLayout()
-        
-        let rightTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRightTap))
-        let leftTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleLeftTap))
 
-        rightTapView.backgroundColor = .clear
-        leftTapView.addGestureRecognizer(leftTapGesture)
-        rightTapView.addGestureRecognizer(rightTapGesture)
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         addGestureRecognizer(panGesture)
+        addGestureRecognizer(tapGesture)
 
     }
     
     override func layoutSubviews() {
         gradientLayer.frame = layer.frame
-        rightTapView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: frame.width / 2, bottom: 0, right: 0))
-        leftTapView.anchor(top: topAnchor, leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: frame.width / 2))
     }
     
     //MARK: setup components
@@ -104,26 +93,19 @@ class CardView: UIView {
     
     //MARK: objc functions
     
-    @objc fileprivate func handleRightTap() {
-        if imageIndex + 1 > cardViewModel.imageNames.count {
-            return
+    @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
+        let tapLocation = gesture.location(in: nil)
+        let shouldAdvanceNextPhoto = tapLocation.x > frame.width / 2 ? true : false
+        print(tapLocation.x, shouldAdvanceNextPhoto , imageIndex, cardViewModel.imageNames.count)
+        barStackView.arrangedSubviews[imageIndex].backgroundColor = diselectedBarColor
+        if shouldAdvanceNextPhoto {
+            imageIndex = min(imageIndex + 1, cardViewModel.imageNames.count - 1)
         } else {
-            barStackView.arrangedSubviews[imageIndex].backgroundColor = UIColor(white: 0, alpha: 0.2)
-            imageIndex += 1
-            barStackView.arrangedSubviews[imageIndex].backgroundColor = .white
-            setImage(from: cardViewModel.imageNames[imageIndex])
+            imageIndex = max(imageIndex - 1, 0)
         }
-    }
-    
-    @objc fileprivate func handleLeftTap() {
-        if imageIndex - 1 < 0  {
-            return
-        } else {
-            barStackView.arrangedSubviews[imageIndex].backgroundColor = UIColor(white: 0, alpha: 0.2)
-            imageIndex -= 1
-            barStackView.arrangedSubviews[imageIndex].backgroundColor = .white
-            setImage(from: cardViewModel.imageNames[imageIndex])
-        }
+        setImage(from: cardViewModel.imageNames[imageIndex])
+        barStackView.arrangedSubviews[imageIndex].backgroundColor = .white
+
     }
     
     @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
