@@ -27,9 +27,17 @@ class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
         setupLayout()
         setupCards()
-        
+        topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+    }
+    
+    @objc func handleSettings() {
+        print("heh")
+        let registrationController = RegistrationController()
+        self.present(registrationController, animated: true)
+
     }
     
     //MARK: FilePripate

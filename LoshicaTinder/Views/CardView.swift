@@ -11,17 +11,16 @@ class CardView: UIView {
 
     fileprivate let border = 150
     fileprivate let diselectedBarColor = UIColor(white: 0.5, alpha: 1.1)
-    fileprivate let imageView = UIImageView(image: UIImage(named: "pizza"))
+    let imageView = UIImageView(image: UIImage(named: "pizza"))
     fileprivate let gradientLayer = CAGradientLayer()
     fileprivate let informationLabel = UILabel()
     fileprivate let barStackView = UIStackView()
-    fileprivate var imageIndex = 0
     
     var cardViewModel: CardViewModel! {
         didSet {
             //setting to [0] will crash app if imageNames .count == 0
             let imageName = cardViewModel.imageNames.first ?? ""
-            setImage(from: imageName)
+            imageView.image = UIImage(named: imageName)
             informationLabel.attributedText = cardViewModel.attibuterdText
             informationLabel.textAlignment = cardViewModel.textAligment
             (0..<cardViewModel.imageNames.count).forEach { (_) in
@@ -36,7 +35,13 @@ class CardView: UIView {
     }
     
     fileprivate func  setupIndexImageObserver() {
-        
+        cardViewModel.imageIndexObserver = { [weak self] (index, image) in
+            self?.imageView.image = image
+            self?.barStackView.arrangedSubviews.forEach { bar in
+                bar.backgroundColor = self?.diselectedBarColor
+            }
+            self?.barStackView.arrangedSubviews[index].backgroundColor = .white
+        }
     }
     
     //MARK: override functions
@@ -90,27 +95,19 @@ class CardView: UIView {
         gradientLayer.frame = layer.frame
         layer.addSublayer(gradientLayer)
     }
-
-    
-    func setImage(from image: String) {
-        imageView.image = UIImage(named: image)
-    }
     
     //MARK: objc functions
     
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
         let tapLocation = gesture.location(in: nil)
         let shouldAdvanceNextPhoto = tapLocation.x > frame.width / 2 ? true : false
-        print(tapLocation.x, shouldAdvanceNextPhoto , imageIndex, cardViewModel.imageNames.count)
-//        barStackView.arrangedSubviews[imageIndex].backgroundColor = diselectedBarColor
-//        if shouldAdvanceNextPhoto {
-//            imageIndex = min(imageIndex + 1, cardViewModel.imageNames.count - 1)
-//        } else {
-//            imageIndex = max(imageIndex - 1, 0)
-//        }
-//        setImage(from: cardViewModel.imageNames[imageIndex])
-//        barStackView.arrangedSubviews[imageIndex].backgroundColor = .white
-
+        
+        
+        if shouldAdvanceNextPhoto {
+            cardViewModel.advanceNextPhoto()
+        } else {
+            cardViewModel.goToPreviousPhoto()
+        }
     }
     
     @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {

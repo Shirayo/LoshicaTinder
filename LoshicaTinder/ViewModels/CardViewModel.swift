@@ -19,11 +19,13 @@ class CardViewModel {
     let attibuterdText: NSAttributedString
     let textAligment: NSTextAlignment
     
-    var imageIndexObserver: (() -> ())?
+    var imageIndexObserver: ((Int, UIImage) -> ())?
     
     fileprivate var imageIndex = 0 {
         didSet {
-            imageIndexObserver?()
+            let imageName = imageNames[imageIndex]
+            let image = UIImage(named: imageName)
+            imageIndexObserver?(imageIndex, image ?? UIImage())
         }
     }
     
@@ -34,11 +36,11 @@ class CardViewModel {
     }
     
     func advanceNextPhoto() {
-        imageIndex += 1
+        imageIndex = min(imageIndex + 1, imageNames.count - 1)
     }
     
     func goToPreviousPhoto() {
-        imageIndex -= 1
+        imageIndex = max(imageIndex - 1, 0)
     }
     
 }
