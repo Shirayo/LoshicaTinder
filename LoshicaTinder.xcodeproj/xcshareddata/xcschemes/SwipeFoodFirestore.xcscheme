@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "827FF1CB2727FAB3007E6B84"
-               BuildableName = "SwipeFoodFirestore.app"
+               BuildableName = "LoshicaTinder.app"
                BlueprintName = "LoshicaTinder"
                ReferencedContainer = "container:LoshicaTinder.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "827FF1CB2727FAB3007E6B84"
-            BuildableName = "SwipeFoodFirestore.app"
+            BuildableName = "LoshicaTinder.app"
             BlueprintName = "LoshicaTinder"
             ReferencedContainer = "container:LoshicaTinder.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "827FF1CB2727FAB3007E6B84"
-            BuildableName = "SwipeFoodFirestore.app"
+            BuildableName = "LoshicaTinder.app"
             BlueprintName = "LoshicaTinder"
             ReferencedContainer = "container:LoshicaTinder.xcodeproj">
          </BuildableReference>
