@@ -11,12 +11,12 @@ class RegistrationViewModel {
     var fullname: String? { didSet { checkFormValidity() } }
     var email: String? { didSet { checkFormValidity() } }
     var password: String? { didSet { checkFormValidity() } }
+    var image = Observable<UIImage>()
+    var isFormValid = Observable<Bool>()
     
     func checkFormValidity() {
         let isValid = fullname?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
-        isValidObserver?(isValid)
+        self.isFormValid.value = isValid
     }
-    
-    var isValidObserver: ((Bool) -> ())?
     
 }

@@ -19,8 +19,9 @@ class RegistrationController: UIViewController {
         button.setTitleColor(.black, for: .normal)
         button.heightAnchor.constraint(equalToConstant: 275).isActive = true
         button.widthAnchor.constraint(equalToConstant: 275).isActive = true
-
         button.layer.cornerRadius = 15
+        button.imageView?.contentMode = .scaleAspectFill
+        button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         return button
     }()
     
@@ -43,7 +44,7 @@ class RegistrationController: UIViewController {
     
     let passwordTextField: CustomTextField = {
         let tf = CustomTextField(padding: 16, height: 44)
-        tf.placeholder = "Enter full name"
+        tf.placeholder = "Enter password"
         tf.backgroundColor = .white
         tf.isSecureTextEntry = true
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
@@ -84,6 +85,15 @@ class RegistrationController: UIViewController {
         selectPhotoButton,
         verticalStackView
     ])
+    
+    let registrationViewModel = RegistrationViewModel()
+
+    @objc fileprivate func handleSelectPhoto() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
+    }
+    
     
     //MARK: override functions
     
@@ -152,13 +162,19 @@ class RegistrationController: UIViewController {
         gradientLayer.frame = view.bounds
     }
     
-    let registrationViewModel = RegistrationViewModel()
-    
     fileprivate func setupRegistrationViewModeControler() {
-        registrationViewModel.isValidObserver = { (isFormValid) in
+    
+        registrationViewModel.isFormValid.bind { [unowned self] (isFormValid) in
+            guard let isFormValid = isFormValid else { return }
             self.registerButton.isEnabled = isFormValid ?  true : false
             print("form is changind, is it valid? ", isFormValid)
         }
+        
+        registrationViewModel.image.bind { [unowned self] img in
+            selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
+            selectPhotoButton.clipsToBounds = true
+        }
+
     }
     
     //MARK: handling functions
@@ -217,5 +233,20 @@ class RegistrationController: UIViewController {
         hud.indicatorView = JGProgressHUDErrorIndicatorView()
         hud.show(in: self.view)
         hud.dismiss(afterDelay: 2)
+    }
+    
+}
+
+//MARK: extensions
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let image = info[.originalImage] as? UIImage
+        self.registrationViewModel.image.value = image
+        self.dismiss(animated: true, completion: nil)
     }
 }
