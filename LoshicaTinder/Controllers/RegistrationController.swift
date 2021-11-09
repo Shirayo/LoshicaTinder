@@ -87,12 +87,6 @@ class RegistrationController: UIViewController {
     ])
     
     let registrationViewModel = RegistrationViewModel()
-
-    @objc fileprivate func handleSelectPhoto() {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        present(picker, animated: true, completion: nil)
-    }
     
     
     //MARK: override functions
@@ -174,6 +168,15 @@ class RegistrationController: UIViewController {
             selectPhotoButton.setImage(img?.withRenderingMode(.alwaysOriginal), for: .normal)
             selectPhotoButton.clipsToBounds = true
         }
+        
+        registrationViewModel.isRegistering.bind { [unowned self] isRegistering in
+            if isRegistering == true {
+                self.registerHUD.textLabel.text = "Register"
+                self.registerHUD.show(in: self.view)
+            } else {
+                self.registerHUD.dismiss(animated: true)
+            }
+        }
 
     }
     
@@ -187,6 +190,12 @@ class RegistrationController: UIViewController {
         UIView.animate(withDuration: 0.5, delay: 0,usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut) {
             self.view.transform = .identity
         }
+    }
+    
+    @objc fileprivate func handleSelectPhoto() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        present(picker, animated: true, completion: nil)
     }
     
     @objc fileprivate func handleKeyboardShow(notification: Notification) {
@@ -215,24 +224,25 @@ class RegistrationController: UIViewController {
     
     @objc fileprivate func handleRegister() {
         self.handleTapDismiss()
-        print("register our user")
-        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            print("created")
+            registrationViewModel.performRegistration { error in
             if let err = error {
                 print(err)
                 self.showHUDWithError(error: err)
+                return
             }
         }
     }
     
+    let registerHUD = JGProgressHUD(style: .dark)
+    
     fileprivate func showHUDWithError(error: Error) {
+        self.registerHUD.dismiss(animated: true)
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Failed registration"
         hud.detailTextLabel.text = error.localizedDescription
         hud.indicatorView = JGProgressHUDErrorIndicatorView()
         hud.show(in: self.view)
-        hud.dismiss(afterDelay: 2)
+        hud.dismiss(afterDelay: 1.5)
     }
     
 }
