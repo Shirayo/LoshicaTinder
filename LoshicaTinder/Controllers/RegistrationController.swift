@@ -177,7 +177,7 @@ class RegistrationController: UIViewController {
                 self.registerHUD.dismiss(animated: true)
             }
         }
-
+        
     }
     
     //MARK: handling functions

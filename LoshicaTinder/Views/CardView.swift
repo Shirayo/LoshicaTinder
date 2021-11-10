@@ -37,17 +37,6 @@ class CardView: UIView {
         }
     }
     
-    fileprivate func  setupIndexImageObserver() {
-        cardViewModel.imageIndexObserver = { [weak self] (index, url) in
-            
-            self?.imageView.sd_setImage(with: url)
-            self?.barStackView.arrangedSubviews.forEach { bar in
-                bar.backgroundColor = self?.diselectedBarColor
-            }
-            self?.barStackView.arrangedSubviews[index].backgroundColor = .white
-        }
-    }
-    
     //MARK: override functions
     
     override init(frame: CGRect) {
@@ -66,6 +55,17 @@ class CardView: UIView {
     }
     
     //MARK: setup components
+    
+    fileprivate func  setupIndexImageObserver() {
+        cardViewModel.imageIndexObserver = { [weak self] (index, url) in
+            
+            self?.imageView.sd_setImage(with: url)
+            self?.barStackView.arrangedSubviews.forEach { bar in
+                bar.backgroundColor = self?.diselectedBarColor
+            }
+            self?.barStackView.arrangedSubviews[index].backgroundColor = .white
+        }
+    }
     
     fileprivate func setupLayout() {
         layer.cornerRadius = 10
@@ -100,7 +100,7 @@ class CardView: UIView {
         layer.addSublayer(gradientLayer)
     }
     
-    //MARK: objc functions
+    //MARK: handle functions
     
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
         let tapLocation = gesture.location(in: nil)
@@ -149,10 +149,8 @@ class CardView: UIView {
             }
         } completion: { (_) in
             print("completed animation")
-//            self.transform = .identity
         }
     }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
