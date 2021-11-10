@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class HomeController: UIViewController {
 
@@ -13,24 +14,34 @@ class HomeController: UIViewController {
     let cardsDeckView = UIView()
     let buttonsStackView = HomeBottomControlsStackView()
     
-    let cardViewModels: [CardViewModel] = {
-        let produsers = [
-            Advertiser(title: "advertisment", brandName: "Shirayo inc.", posterPhotoName: "advertising"),
-            User(name: "Saveliy", age: 21, profession: "hot programmer", imageNames: ["saveliy1","saveliy2","saveliy3"]),
-            User(name: "Vasily", age: 21, profession: "dangeon master", imageNames: ["vasiliy1","vasiliy2","vasiliy3"]),
-            User(name: "Nikita", age: 22, profession: "Tarkovchanin", imageNames: ["nikita1","nikita2","nikita3"])
-        ] as [ProdusesCardViewModel]
-        let viewModels = produsers.map {return $0.toCardViewModel()}
-        return viewModels
-    }()
-    
+    var cardViewModels = [CardViewModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupLayout()
-        setupCards()
+        setupFireStoreUserCards()
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        fetchUsersFromFireStore()
+    }
+    
+    fileprivate func fetchUsersFromFireStore() {
+        
+        let query = Firestore.firestore().collection("users").whereField("age", isEqualTo: 24)
+        query.getDocuments { snapshot, error in
+            if let err = error {
+                print(err)
+                return
+            }
+            
+            snapshot?.documents.forEach({ documentSnapshot in
+                let userDictionary = documentSnapshot.data()
+                print(userDictionary)
+                let user = User(from: userDictionary)
+                self.cardViewModels.append(user.toCardViewModel())
+            })
+            self.setupFireStoreUserCards()
+        }
     }
     
     @objc func handleSettings() {
@@ -42,7 +53,7 @@ class HomeController: UIViewController {
     
     //MARK: FilePripate
     
-    fileprivate func setupCards() {
+    fileprivate func setupFireStoreUserCards() {
         cardViewModels.forEach { cardVM in
             let cardView = CardView(frame: .zero)
             cardView.cardViewModel = cardVM

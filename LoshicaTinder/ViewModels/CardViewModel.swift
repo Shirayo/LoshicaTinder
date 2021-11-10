@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SDWebImage
 
 protocol ProdusesCardViewModel {
     func toCardViewModel() -> CardViewModel
@@ -19,13 +20,14 @@ class CardViewModel {
     let attibuterdText: NSAttributedString
     let textAligment: NSTextAlignment
     
-    var imageIndexObserver: ((Int, UIImage) -> ())?
+    var imageIndexObserver: ((Int, URL) -> ())?
     
     fileprivate var imageIndex = 0 {
         didSet {
             let imageName = imageNames[imageIndex]
-            let image = UIImage(named: imageName)
-            imageIndexObserver?(imageIndex, image ?? UIImage())
+            if let url = URL(string: imageName) {
+                imageIndexObserver?(imageIndex, url)
+            }
         }
     }
     
