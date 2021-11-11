@@ -26,6 +26,7 @@
 		82E70E9B2739143400F6A8A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 82E70E9A2739143400F6A8A7 /* GoogleService-Info.plist */; };
 		82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9C27395E2E00F6A8A7 /* Observable.swift */; };
 		82E70E9F273CEA2600F6A8A7 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9E273CEA2600F6A8A7 /* SettingsController.swift */; };
+		82E70EA1273D15C800F6A8A7 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70EA0273D15C800F6A8A7 /* SettingsCell.swift */; };
 		FC40AD96D1E3D428E79717CA /* Pods_LoshicaTinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCAE4E9512408227D79C6481 /* Pods_LoshicaTinder.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		82E70E9A2739143400F6A8A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		82E70E9C27395E2E00F6A8A7 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		82E70E9E273CEA2600F6A8A7 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		82E70EA0273D15C800F6A8A7 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
 		BCAE4E9512408227D79C6481 /* Pods_LoshicaTinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoshicaTinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF991AD9D6E6745C906E15B0 /* Pods-LoshicaTinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoshicaTinder.debug.xcconfig"; path = "Target Support Files/Pods-LoshicaTinder/Pods-LoshicaTinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 				82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */,
 				82BE12CE2729565E00DDE023 /* CardView.swift */,
 				82E70E962734007800F6A8A7 /* CustomTextField.swift */,
+				82E70EA0273D15C800F6A8A7 /* SettingsCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -300,6 +303,7 @@
 				82E70E9927354D2500F6A8A7 /* RegistrationViewModel.swift in Sources */,
 				827FF1E527283BF2007E6B84 /* Extensions+UIView.swift in Sources */,
 				827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */,
+				82E70EA1273D15C800F6A8A7 /* SettingsCell.swift in Sources */,
 				82E70E912731168A00F6A8A7 /* CardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
