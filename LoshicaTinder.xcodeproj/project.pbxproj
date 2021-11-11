@@ -25,6 +25,7 @@
 		82E70E9927354D2500F6A8A7 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9827354D2500F6A8A7 /* RegistrationViewModel.swift */; };
 		82E70E9B2739143400F6A8A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 82E70E9A2739143400F6A8A7 /* GoogleService-Info.plist */; };
 		82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9C27395E2E00F6A8A7 /* Observable.swift */; };
+		82E70E9F273CEA2600F6A8A7 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9E273CEA2600F6A8A7 /* SettingsController.swift */; };
 		FC40AD96D1E3D428E79717CA /* Pods_LoshicaTinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCAE4E9512408227D79C6481 /* Pods_LoshicaTinder.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		82E70E9827354D2500F6A8A7 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		82E70E9A2739143400F6A8A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		82E70E9C27395E2E00F6A8A7 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		82E70E9E273CEA2600F6A8A7 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		BCAE4E9512408227D79C6481 /* Pods_LoshicaTinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoshicaTinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF991AD9D6E6745C906E15B0 /* Pods-LoshicaTinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoshicaTinder.debug.xcconfig"; path = "Target Support Files/Pods-LoshicaTinder/Pods-LoshicaTinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +155,7 @@
 			children = (
 				827FF1D32727FAB3007E6B84 /* HomeController.swift */,
 				82E70E942733B7EF00F6A8A7 /* RegistrationController.swift */,
+				82E70E9E273CEA2600F6A8A7 /* SettingsController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -289,6 +292,7 @@
 				827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */,
 				82BE12CB27292B0200DDE023 /* HomeBottomControlsStackView.swift in Sources */,
 				82E70E8D27301A4300F6A8A7 /* User.swift in Sources */,
+				82E70E9F273CEA2600F6A8A7 /* SettingsController.swift in Sources */,
 				82E70E952733B7F000F6A8A7 /* RegistrationController.swift in Sources */,
 				82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */,
 				82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */,
