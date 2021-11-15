@@ -35,10 +35,12 @@ class SettingsController: UITableViewController {
         button.layer.cornerRadius = 16
         return button
     }
-    
     lazy var image1Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
+    lazy var imageButtons = [image1Button, image2Button, image3Button]
+    var isImageChanged = [false, false, false]
+    
     lazy var header: UIView = {
         let header = UIView()
         let padding: CGFloat = 16
@@ -60,7 +62,6 @@ class SettingsController: UITableViewController {
         picker.delegate = self
         picker.imageButton = button
         present(picker, animated: true, completion: nil)
-        print(button)
     }
     
     override func viewDidLoad() {
@@ -90,45 +91,83 @@ class SettingsController: UITableViewController {
     }
     
     fileprivate func loadUserPhotos() {
-        guard let imageLink = self.user?.imageUrl1 else { return }
-        guard let imageUrl = URL(string: imageLink) else { return }
-        SDWebImageManager.shared.loadImage(with: imageUrl, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
-            self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        guard let images = self.user?.images else { return }
+        for i in 0..<imageButtons.count {
+            guard let imageUrl = URL(string: images[i]) else { return }
+            SDWebImageManager.shared.loadImage(with: imageUrl, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.imageButtons[i].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
         }
     }
     
     fileprivate func setupNavBar() {
         self.title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "cancel", style: .done, target: self, action: #selector(handleCancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .done, target: self, action: #selector(handleCancel))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "save", style: .done, target: self, action: #selector(handleSave)),
             UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(handleCancel))
         ]
     }
+
+    let dispatchGroup = DispatchGroup()
     
+    fileprivate func saveToStorage() {
+        for i in 0..<imageButtons.count {
+            if isImageChanged[i] == true {
+                let filename = UUID().uuidString
+                let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+                if let image = self.imageButtons[i].imageView?.image, let imageData = image.jpegData(compressionQuality: 0.75)  {
+                    self.dispatchGroup.enter()
+                    ref.putData(imageData, metadata: nil) { (_, error) in
+                        if let err = error {
+                            print("error: \(err)")
+                            return
+                        }
+                        self.dispatchGroup.enter()
+                        ref.downloadURL { url, error in
+                            if let err = error {
+                                print("error: \(err)")
+                                return
+                            }
+                            let imageUrl = url?.absoluteString ?? ""
+                            self.user?.images[i] = imageUrl
+                            self.dispatchGroup.leave()
+                        }
+                        self.dispatchGroup.leave()
+                    }
+                }
+            }
+        }
+        isImageChanged = [false, false, false]
+    } 
+        
     @objc fileprivate func handleSave() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        let savedData: [String: Any] = [
-            "uid": uid,
-            "fullName": user?.name ?? "",
-            "profession": user?.profession ?? "",
-            "imageUrl1": user?.imageUrl1 ?? "",
-            "age": user?.age ?? -1,
-        ]
         let hud = JGProgressHUD.init(style: .dark)
         hud.textLabel.text = "saving"
         hud.show(in: self.view)
-        Firestore.firestore().collection("users").document(uid).setData(savedData) { error in
-            if let _ = error {
-                hud.textLabel.text = "error in saving data"
-                hud.indicatorView = JGProgressHUDErrorIndicatorView()
-                hud.dismiss(afterDelay: 1.5)
-            } else {
-                hud.textLabel.text = "data saved successfully"
-                hud.indicatorView = JGProgressHUDSuccessIndicatorView()
-                hud.dismiss(afterDelay: 1)
+        self.saveToStorage()
+        dispatchGroup.notify(queue: DispatchQueue.global()) { [unowned self] in
+            let savedData: [String: Any] = [
+                "uid": uid,
+                "fullName": user?.name ?? "",
+                "profession": user?.profession ?? "",
+                "images": user?.images ?? [""],
+                "age": user?.age ?? -1,
+            ]
+            Firestore.firestore().collection("users").document(uid).setData(savedData) { error in
+                if let _ = error {
+                    hud.textLabel.text = "error in saving data"
+                    hud.indicatorView = JGProgressHUDErrorIndicatorView()
+                    hud.dismiss(afterDelay: 1.5)
+                } else {
+                    hud.textLabel.text = "data saved successfully"
+                    hud.indicatorView = JGProgressHUDSuccessIndicatorView()
+                    hud.dismiss(afterDelay: 1)
+                }
             }
+            
         }
     }
     
@@ -155,7 +194,7 @@ class SettingsController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -167,6 +206,10 @@ class SettingsController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 5 {
+            let cell = AgeRangeCell(style: .default, reuseIdentifier: nil)
+            return cell
+        }
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         switch indexPath.section {
         case 1:
@@ -184,8 +227,10 @@ class SettingsController: UITableViewController {
                 cell.textField.keyboardType = .numberPad
                 cell.textField.addTarget(self, action: #selector(handleAgeChange), for: .editingChanged)
             }
-        case 4  :
+        case 4 :
             cell.textField.placeholder = "Enter bio"
+        case 5 :
+            cell.textField.placeholder = "Seeking Age Range"
         default:
             cell.textField.placeholder = "default placeholder"
         }
@@ -217,9 +262,13 @@ extension SettingsController: UIImagePickerControllerDelegate, UINavigationContr
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
-        let imageButton = (picker as? CustomImagePcikerController)?.imageButton
-        imageButton?.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-    
+        guard let selectedButton = (picker as? CustomImagePcikerController)?.imageButton else { return }
+        guard let imageIndex = imageButtons.firstIndex(of: selectedButton) else { return }
+        imageButtons[imageIndex].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        isImageChanged[imageIndex] = true
+        
+        print(imageIndex, isImageChanged)
+
         self.dismiss(animated: true, completion: nil)
     }
 }

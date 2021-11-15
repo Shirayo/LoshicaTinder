@@ -19,7 +19,6 @@ class CardView: UIView {
     
     var cardViewModel: CardViewModel! {
         didSet {
-
             let imageName = cardViewModel.imageNames.first ?? ""
             let imageUrl = URL(string: imageName)
             imageView.sd_setImage(with: imageUrl, completed: nil)
