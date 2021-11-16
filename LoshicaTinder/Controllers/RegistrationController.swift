@@ -25,9 +25,17 @@ class RegistrationController: UIViewController {
         return button
     }()
     
+    let goToLoginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Go to login", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
+        return button
+    }()
+    
     let fullNameTextField: CustomTextField = {
         let tf = CustomTextField(padding: 16, height: 44)
-        tf.backgroundColor = .white
         tf.placeholder = "Enter full name"
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         return tf
@@ -36,7 +44,6 @@ class RegistrationController: UIViewController {
     let emailTextField: CustomTextField = {
         let tf = CustomTextField(padding: 16, height: 44)
         tf.placeholder = "Enter email"
-        tf.backgroundColor = .white
         tf.keyboardType = .emailAddress
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         return tf
@@ -45,7 +52,6 @@ class RegistrationController: UIViewController {
     let passwordTextField: CustomTextField = {
         let tf = CustomTextField(padding: 16, height: 44)
         tf.placeholder = "Enter password"
-        tf.backgroundColor = .white
         tf.isSecureTextEntry = true
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         return tf
@@ -140,6 +146,8 @@ class RegistrationController: UIViewController {
         overallStackView.spacing = 8
         overallStackView.anchor(top: nil, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 50, bottom: 0, right: 50))
         overallStackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        view.addSubview(goToLoginButton)
+        goToLoginButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
     
     fileprivate func setupNotificationObsrever() {
@@ -181,6 +189,11 @@ class RegistrationController: UIViewController {
     }
     
     //MARK: handling functions
+    
+    @objc fileprivate func handleGoToLogin() {
+        let loginController = LoginController()
+        navigationController?.pushViewController(loginController, animated: true)
+    }
     
     @objc fileprivate func handleTapDismiss() {
         self.view.endEditing(true)

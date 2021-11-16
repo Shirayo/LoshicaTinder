@@ -94,7 +94,7 @@ class SettingsController: UITableViewController {
     
     fileprivate func loadUserPhotos() {
         guard let images = self.user?.images else { return }
-        for i in 0..<imageButtons.count {
+        for i in 0..<images.count {
             guard let imageUrl = URL(string: images[i]) else { return }
             SDWebImageManager.shared.loadImage(with: imageUrl, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
                 self.imageButtons[i].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -105,10 +105,10 @@ class SettingsController: UITableViewController {
     fileprivate func setupNavBar() {
         self.title = "Settings"
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .done, target: self, action: #selector(handleCancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "back", style: .done, target: self, action: #selector(handleBack))
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(title: "save", style: .done, target: self, action: #selector(handleSave)),
-            UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(handleCancel))
+            UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(handleLogout))
         ]
     }
 
@@ -175,6 +175,11 @@ class SettingsController: UITableViewController {
                 self.delegate?.didSavedSettings()
             }
         }
+    }
+    
+    @objc fileprivate func handleLogout() {
+        try? Auth.auth().signOut()
+        self.dismiss(animated: true)
     }
     
     //MARK: override functions
@@ -264,7 +269,7 @@ class SettingsController: UITableViewController {
         self.user?.age = Int(textField.text ?? "")
     }
     
-    @objc fileprivate func handleCancel() {
+    @objc fileprivate func handleBack() {
         self.dismiss(animated: true)
     }
     

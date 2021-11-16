@@ -14,19 +14,28 @@ protocol SettingsControllerDelegate {
     func didSavedSettings()
 }
 
-class HomeController: UIViewController, SettingsControllerDelegate {
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
     
     var cardViewModels = [CardViewModel]()
-    let settingsController = SettingsController()
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if Auth.auth().currentUser == nil {
+            let loginController = LoginController()
+            loginController.delegate = self
+            let navController = UINavigationController(rootViewController: loginController)
+            navController.modalPresentationStyle = .fullScreen
+            self.present(navController, animated: true)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        settingsController.delegate = self
         setupLayout()
         setupFireStoreUserCards()
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
@@ -43,6 +52,7 @@ class HomeController: UIViewController, SettingsControllerDelegate {
             }
             guard let dictionary = docSnapshot?.data() else { return }
             self.user = User(from: dictionary)
+            print("found user")
             self.fetchUsersFromFireStore()
         }
     }
@@ -55,13 +65,26 @@ class HomeController: UIViewController, SettingsControllerDelegate {
         fetchCurrentUser()
     }
     
+    func didFinishLoggingIn() {
+        print("didFinishLoggingIn")
+        fetchCurrentUser()
+    }
+    
+    
     fileprivate func fetchUsersFromFireStore() {
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Loading users"
         hud.show(in: self.view)
-        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
+        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else {
+            hud.textLabel.text = "Please enter seeking age in settings"
+            hud.indicatorView = JGProgressHUDErrorIndicatorView()
+            hud.dismiss(afterDelay: 2)
+            return
+        }
 //        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastUser?.uid ?? ""]).limit(to: 2)
-        let query = Firestore.firestore().collection("users").whereField("age", isLessThanOrEqualTo: maxAge).whereField("age", isGreaterThanOrEqualTo: minAge)
+        let query = Firestore.firestore().collection("users")
+            .whereField("age", isLessThanOrEqualTo: maxAge)
+            .whereField("age", isGreaterThanOrEqualTo: minAge)
         query.getDocuments { snapshot, error in
             if snapshot?.documents.isEmpty == true {
                 print("heh")
@@ -95,6 +118,8 @@ class HomeController: UIViewController, SettingsControllerDelegate {
     
     
     @objc func handleSettings() {
+        let settingsController = SettingsController()
+        settingsController.delegate = self
         let navController = UINavigationController(rootViewController: settingsController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
