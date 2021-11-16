@@ -19,6 +19,8 @@ class CustomImagePcikerController: UIImagePickerController {
 
 class SettingsController: UITableViewController {
    
+    var delegate: SettingsControllerDelegate?
+    
     class HeaderLabel: UILabel {
         override func drawText(in rect: CGRect) {
             super.drawText(in: rect.insetBy(dx: 16, dy: 0))
@@ -148,7 +150,7 @@ class SettingsController: UITableViewController {
         hud.textLabel.text = "saving"
         hud.show(in: self.view)
         self.saveToStorage()
-        dispatchGroup.notify(queue: DispatchQueue.global()) { [unowned self] in
+        dispatchGroup.notify(queue: DispatchQueue.main) { [unowned self] in
             let savedData: [String: Any] = [
                 "uid": uid,
                 "fullName": user?.name ?? "",
@@ -168,6 +170,9 @@ class SettingsController: UITableViewController {
                     hud.indicatorView = JGProgressHUDSuccessIndicatorView()
                     hud.dismiss(afterDelay: 1)
                 }
+            }
+            self.dismiss(animated: true) {
+                self.delegate?.didSavedSettings()
             }
         }
     }

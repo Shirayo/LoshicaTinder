@@ -7,33 +7,61 @@
 
 import UIKit
 import FirebaseFirestore
+import Firebase
 import JGProgressHUD
 
-class HomeController: UIViewController {
+protocol SettingsControllerDelegate {
+    func didSavedSettings()
+}
 
+class HomeController: UIViewController, SettingsControllerDelegate {
+    
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
     
     var cardViewModels = [CardViewModel]()
-    
+    let settingsController = SettingsController()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        settingsController.delegate = self
         setupLayout()
         setupFireStoreUserCards()
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
-        fetchUsersFromFireStore()
+        fetchCurrentUser()
     }
     
+    fileprivate func fetchCurrentUser() {
+        guard let userUid = Auth.auth().currentUser?.uid else { return }
+        Firestore.firestore().collection("users").document(userUid).getDocument { docSnapshot, error in
+            if let err = error {
+                print(err)
+                return
+            }
+            guard let dictionary = docSnapshot?.data() else { return }
+            self.user = User(from: dictionary)
+            self.fetchUsersFromFireStore()
+        }
+    }
+    
+    var user: User?
     var lastUser: User?
+    
+    func didSavedSettings() {
+        print("did saved Setting")
+        fetchCurrentUser()
+    }
     
     fileprivate func fetchUsersFromFireStore() {
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Loading users"
         hud.show(in: self.view)
-        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastUser?.uid ?? ""]).limit(to: 2)
+        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else { return }
+//        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastUser?.uid ?? ""]).limit(to: 2)
+        let query = Firestore.firestore().collection("users").whereField("age", isLessThanOrEqualTo: maxAge).whereField("age", isGreaterThanOrEqualTo: minAge)
         query.getDocuments { snapshot, error in
             if snapshot?.documents.isEmpty == true {
                 print("heh")
@@ -67,7 +95,6 @@ class HomeController: UIViewController {
     
     
     @objc func handleSettings() {
-        let settingsController = SettingsController()
         let navController = UINavigationController(rootViewController: settingsController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
