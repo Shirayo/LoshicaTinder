@@ -155,6 +155,8 @@ class SettingsController: UITableViewController {
                 "profession": user?.profession ?? "",
                 "images": user?.images ?? [""],
                 "age": user?.age ?? -1,
+                "minSeekingAge": user?.minSeekingAge ?? 18,
+                "maxSeekingAge": user?.maxSeekingAge ?? 100
             ]
             Firestore.firestore().collection("users").document(uid).setData(savedData) { error in
                 if let _ = error {
@@ -167,7 +169,6 @@ class SettingsController: UITableViewController {
                     hud.dismiss(afterDelay: 1)
                 }
             }
-            
         }
     }
     
@@ -187,6 +188,8 @@ class SettingsController: UITableViewController {
             headerLabel.text = "Age"
         case 4:
             headerLabel.text = "Bio"
+        case 5:
+            headerLabel.text = "Seeking Age Range"
         default:
             headerLabel.text = "default"
         }
@@ -207,8 +210,17 @@ class SettingsController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 5 {
-            let cell = AgeRangeCell(style: .default, reuseIdentifier: nil)
-            return cell
+            let ageRangeCell = AgeRangeCell(style: .default, reuseIdentifier: nil)
+            ageRangeCell.minAgeSlider.addTarget(self, action: #selector(HandleMinAgeSliderValueChanged), for: .valueChanged)
+            ageRangeCell.maxAgeSlider.addTarget(self, action: #selector(HandleMaxAgeSliderValueChanged), for: .valueChanged)
+            if let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge {
+                ageRangeCell.minLabel.text = "Min \(minAge)"
+                ageRangeCell.minAgeSlider.setValue(Float(minAge), animated: false)
+                ageRangeCell.maxLabel.text = "Max \(maxAge)"
+                ageRangeCell.maxAgeSlider.setValue(Float(maxAge), animated: false)
+            }
+            
+            return ageRangeCell
         }
         let cell = SettingsCell(style: .default, reuseIdentifier: nil)
         switch indexPath.section {
@@ -229,8 +241,6 @@ class SettingsController: UITableViewController {
             }
         case 4 :
             cell.textField.placeholder = "Enter bio"
-        case 5 :
-            cell.textField.placeholder = "Seeking Age Range"
         default:
             cell.textField.placeholder = "default placeholder"
         }
@@ -251,6 +261,30 @@ class SettingsController: UITableViewController {
     
     @objc fileprivate func handleCancel() {
         self.dismiss(animated: true)
+    }
+    
+    @objc fileprivate func HandleMinAgeSliderValueChanged(slider: UISlider) {
+        let ageValue = slider.value.rounded()
+        user?.minSeekingAge = Int(ageValue)
+        let indexPath = IndexPath(row: 0, section: 5)
+        let cell = tableView.cellForRow(at: indexPath) as! AgeRangeCell
+        if ageValue > cell.maxAgeSlider.value {
+            cell.maxAgeSlider.setValue(ageValue, animated: true)
+            cell.maxLabel.text = "Max \(Int(ageValue))"
+        }
+        cell.minLabel.text = "Min \(Int(ageValue))"
+    }
+    
+    @objc fileprivate func HandleMaxAgeSliderValueChanged(slider: UISlider) {
+        let ageValue = slider.value.rounded()
+        user?.maxSeekingAge = Int(ageValue)
+        let indexPath = IndexPath(row: 0, section: 5)
+        let cell = tableView.cellForRow(at: indexPath) as! AgeRangeCell
+        if ageValue < cell.minAgeSlider.value {
+            cell.minAgeSlider.setValue(ageValue, animated: true)
+            cell.minLabel.text = "Min \(Int(ageValue))"
+        }
+        cell.maxLabel.text = "Max \(Int(ageValue))"
     }
     
 }
