@@ -17,6 +17,10 @@ class CustomImagePcikerController: UIImagePickerController {
     
 }
 
+protocol SettingsControllerDelegate {
+    func didSavedSettings()
+}
+
 class SettingsController: UITableViewController {
    
     var delegate: SettingsControllerDelegate?

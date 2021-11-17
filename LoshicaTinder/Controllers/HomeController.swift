@@ -10,18 +10,17 @@ import FirebaseFirestore
 import Firebase
 import JGProgressHUD
 
-protocol SettingsControllerDelegate {
-    func didSavedSettings()
-}
-
-class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate {
+class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
     
     let topStackView = TopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
-    
     var cardViewModels = [CardViewModel]()
-
+    var user: User?
+    var lastUser: User?
+    
+    //MARK: override functions
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if Auth.auth().currentUser == nil {
@@ -43,6 +42,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         fetchCurrentUser()
     }
     
+    //MARK: fetch functions
+    
     fileprivate func fetchCurrentUser() {
         guard let userUid = Auth.auth().currentUser?.uid else { return }
         Firestore.firestore().collection("users").document(userUid).getDocument { docSnapshot, error in
@@ -56,20 +57,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             self.fetchUsersFromFireStore()
         }
     }
-    
-    var user: User?
-    var lastUser: User?
-    
-    func didSavedSettings() {
-        print("did saved Setting")
-        fetchCurrentUser()
-    }
-    
-    func didFinishLoggingIn() {
-        print("didFinishLoggingIn")
-        fetchCurrentUser()
-    }
-    
     
     fileprivate func fetchUsersFromFireStore() {
         let hud = JGProgressHUD(style: .dark)
@@ -101,35 +88,24 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             snapshot?.documents.forEach({ documentSnapshot in
                 let userDictionary = documentSnapshot.data()
                 let user = User(from: userDictionary)
-                self.cardViewModels.append(user.toCardViewModel())
-                self.lastUser = user
-                self.setupCardFromUser(user: user)
+                if user.uid != self.user?.uid {
+                    self.cardViewModels.append(user.toCardViewModel())
+                    self.lastUser = user
+                    self.setupCardFromUser(user: user)
+                }
             })
         }
     }
     
+    //MARK: setup functions
+    
     fileprivate func setupCardFromUser(user: User) {
         let cardView = CardView(frame: .zero)
+        cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperView()
-    }
-    
-    
-    @objc func handleSettings() {
-        let settingsController = SettingsController()
-        settingsController.delegate = self
-        let navController = UINavigationController(rootViewController: settingsController)
-        navController.modalPresentationStyle = .fullScreen
-        present(navController, animated: true)
-    }
-    
-    //MARK: Fileprivate
-    
-    @objc fileprivate func handleRefresh() {
-        cardViewModels = []
-        fetchUsersFromFireStore()
     }
     
     fileprivate func setupFireStoreUserCards() {
@@ -149,6 +125,39 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         overallStackView.isLayoutMarginsRelativeArrangement = true
         overallStackView.layoutMargins = .init(top: 0, left: 8, bottom: 0, right: 8)
         overallStackView.bringSubviewToFront(cardsDeckView)
+    }
+
+    //MARK: delegates
+    
+    func didTapMoreInfo() {
+        print("heh")
+        let userDetailsController = UserDetailsController()
+        self.present(userDetailsController, animated: true)
+    }
+    
+    func didSavedSettings() {
+        print("did saved Setting")
+        fetchCurrentUser()
+    }
+    
+    func didFinishLoggingIn() {
+        print("didFinishLoggingIn")
+        fetchCurrentUser()
+    }
+    
+    //MARK: handle functions
+    
+    @objc func handleSettings() {
+        let settingsController = SettingsController()
+        settingsController.delegate = self
+        let navController = UINavigationController(rootViewController: settingsController)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
+        
+    @objc fileprivate func handleRefresh() {
+        cardViewModels = []
+        fetchUsersFromFireStore()
     }
     
 }

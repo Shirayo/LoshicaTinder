@@ -8,6 +8,12 @@
 import UIKit
 import SDWebImage
 
+protocol CardViewDelegate {
+    
+    func didTapMoreInfo()
+    
+}
+
 class CardView: UIView {
 
     fileprivate let border = 150
@@ -16,6 +22,8 @@ class CardView: UIView {
     fileprivate let gradientLayer = CAGradientLayer()
     fileprivate let informationLabel = UILabel()
     fileprivate let barStackView = UIStackView()
+    
+    var delegate: CardViewDelegate?
     
     var cardViewModel: CardViewModel! {
         didSet {
@@ -66,6 +74,13 @@ class CardView: UIView {
         }
     }
     
+    let moreInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
+        return button
+    }()
+    
     fileprivate func setupLayout() {
         layer.cornerRadius = 10
         clipsToBounds = true
@@ -80,6 +95,8 @@ class CardView: UIView {
         informationLabel.numberOfLines = 0
         informationLabel.textColor = .white
         informationLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
+        addSubview(moreInfoButton)
+        moreInfoButton.anchor(top: nil, leading: nil, bottom: self.bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 16), size: .init(width: 44, height: 44))
         setupBarsStackView()
     }
     
@@ -100,6 +117,10 @@ class CardView: UIView {
     }
     
     //MARK: handle functions
+    
+    @objc fileprivate func handleMoreInfo() {
+        delegate?.didTapMoreInfo()
+    }
     
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
         let tapLocation = gesture.location(in: nil)
