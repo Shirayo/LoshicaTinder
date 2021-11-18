@@ -10,7 +10,7 @@ import SDWebImage
 
 protocol CardViewDelegate {
     
-    func didTapMoreInfo()
+    func didTapMoreInfo(cardViewModel: CardViewModel)
     
 }
 
@@ -27,13 +27,13 @@ class CardView: UIView {
     
     var cardViewModel: CardViewModel! {
         didSet {
-            let imageName = cardViewModel.imageNames.first ?? ""
+            let imageName = cardViewModel.imageUrls.first ?? ""
             let imageUrl = URL(string: imageName)
             imageView.sd_setImage(with: imageUrl, completed: nil)
             
             informationLabel.attributedText = cardViewModel.attibuterdText
             informationLabel.textAlignment = cardViewModel.textAligment
-            (0..<cardViewModel.imageNames.count).forEach { (_) in
+            (0..<cardViewModel.imageUrls.count).forEach { (_) in
                 let barView = UIView()
                 barView.backgroundColor = diselectedBarColor
                 barView.layer.cornerRadius = 2
@@ -119,7 +119,7 @@ class CardView: UIView {
     //MARK: handle functions
     
     @objc fileprivate func handleMoreInfo() {
-        delegate?.didTapMoreInfo()
+        delegate?.didTapMoreInfo(cardViewModel: cardViewModel)
     }
     
     @objc fileprivate func handleTap(gesture: UITapGestureRecognizer) {
@@ -136,10 +136,6 @@ class CardView: UIView {
     
     @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
         switch gesture.state {
-//        case .began:
-//            superview?.subviews.forEach({ subview in
-//                subview.layer.removeAllAnimations()
-//            })
         case .changed:
             handleChanged(gesture)
         case .ended :
