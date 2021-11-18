@@ -17,12 +17,14 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return sv
     }()
     
-    let imageView: UIImageView = {
-        let img = UIImageView()
-        img.image = UIImage(named: "nikita1")
-        img.contentMode = .scaleAspectFill // .scaleAspectFill
-        return img
-    }()
+//    let imageView: UIImageView = {
+//        let img = UIImageView()
+//        img.image = UIImage(named: "nikita1")
+//        img.contentMode = .scaleAspectFill // .scaleAspectFill
+//        return img
+//    }()
+    
+    
     
     let label: UILabel = {
        let label = UILabel()
@@ -42,10 +44,12 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     var cardViewModel : CardViewModel? {
         didSet {
             label.attributedText = cardViewModel?.attibuterdText
-            let url = URL(string: (cardViewModel?.imageUrls[0])!)
-            imageView.sd_setImage(with: url)
+            swipingPhotosController.cardViewModel = cardViewModel
         }
     }
+    
+    let swipingPhotosController = SwipingPhotosController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+    
     
     lazy var dislikeButton = createButton(image: UIImage(named: "dismiss_circle")!, selector: #selector(handleDislike))
     lazy var superLikeButton = createButton(image: UIImage(named: "super_like_circle")!, selector: #selector(handleDislike))
@@ -60,6 +64,13 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return btn
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let swipingView = swipingPhotosController.view!
+        swipingView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height / 2)
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -72,8 +83,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
         scrollView.fillSuperView()
         
+        let imageView = swipingPhotosController.view!
+        
         scrollView.addSubview(imageView)
-        imageView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height / 2)
         
         scrollView.addSubview(label)
         label.anchor(top: imageView.bottomAnchor, leading: scrollView.leadingAnchor, bottom: nil, trailing: scrollView.trailingAnchor, padding: .init(top: 16, left: 16, bottom: 16, right: 16))
@@ -112,7 +124,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         var height = self.view.frame.height / 2 + yOffset
         height = max(self.view.frame.height / 2, height)
         
-        imageView.frame = CGRect(x: min(0, -yOffset / 2), y: min(0, -yOffset), width: width , height: height)
+        let swipingView = swipingPhotosController.view!
+        swipingView.frame = CGRect(x: min(0, -yOffset / 2), y: min(0, -yOffset), width: width , height: height)
     }
     
     @objc fileprivate func handleTapDismiss() {
