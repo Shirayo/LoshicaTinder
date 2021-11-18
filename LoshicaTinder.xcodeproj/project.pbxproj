@@ -18,11 +18,11 @@
 		82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */; };
 		82BE12CF2729565E00DDE023 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CE2729565E00DDE023 /* CardView.swift */; };
 		82CC1A6D2744E4C700BA4216 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CC1A6C2744E4C700BA4216 /* UserDetailsController.swift */; };
+		82CC1A6F2746416B00BA4216 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CC1A6E2746416B00BA4216 /* CustomTextField.swift */; };
 		82E70E8D27301A4300F6A8A7 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E8C27301A4300F6A8A7 /* User.swift */; };
 		82E70E912731168A00F6A8A7 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E902731168A00F6A8A7 /* CardViewModel.swift */; };
 		82E70E9327312EFF00F6A8A7 /* Advertiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9227312EFF00F6A8A7 /* Advertiser.swift */; };
 		82E70E952733B7F000F6A8A7 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E942733B7EF00F6A8A7 /* RegistrationController.swift */; };
-		82E70E972734007800F6A8A7 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E962734007800F6A8A7 /* CustomTextField.swift */; };
 		82E70E9927354D2500F6A8A7 /* RegistrationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9827354D2500F6A8A7 /* RegistrationViewModel.swift */; };
 		82E70E9B2739143400F6A8A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 82E70E9A2739143400F6A8A7 /* GoogleService-Info.plist */; };
 		82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70E9C27395E2E00F6A8A7 /* Observable.swift */; };
@@ -49,11 +49,11 @@
 		82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
 		82BE12CE2729565E00DDE023 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		82CC1A6C2744E4C700BA4216 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
+		82CC1A6E2746416B00BA4216 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		82E70E8C27301A4300F6A8A7 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		82E70E902731168A00F6A8A7 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		82E70E9227312EFF00F6A8A7 /* Advertiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Advertiser.swift; sourceTree = "<group>"; };
 		82E70E942733B7EF00F6A8A7 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
-		82E70E962734007800F6A8A7 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomTextField.swift; path = ../../../../Desktop/CustomTextField.swift; sourceTree = "<group>"; };
 		82E70E9827354D2500F6A8A7 /* RegistrationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationViewModel.swift; sourceTree = "<group>"; };
 		82E70E9A2739143400F6A8A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		82E70E9C27395E2E00F6A8A7 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -146,9 +146,9 @@
 				82BE12CA27292B0200DDE023 /* HomeBottomControlsStackView.swift */,
 				82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */,
 				82BE12CE2729565E00DDE023 /* CardView.swift */,
-				82E70E962734007800F6A8A7 /* CustomTextField.swift */,
 				82E70EA0273D15C800F6A8A7 /* SettingsCell.swift */,
 				82E70EA22742984E00F6A8A7 /* AgeRangeCell.swift */,
+				82CC1A6E2746416B00BA4216 /* CustomTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,6 +305,7 @@
 				82BE12CF2729565E00DDE023 /* CardView.swift in Sources */,
 				82E70E9327312EFF00F6A8A7 /* Advertiser.swift in Sources */,
 				827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */,
+				82CC1A6F2746416B00BA4216 /* CustomTextField.swift in Sources */,
 				827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */,
 				82BE12CB27292B0200DDE023 /* HomeBottomControlsStackView.swift in Sources */,
 				82E70EA32742984F00F6A8A7 /* AgeRangeCell.swift in Sources */,
@@ -314,7 +315,6 @@
 				82E70E952733B7F000F6A8A7 /* RegistrationController.swift in Sources */,
 				82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */,
 				82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */,
-				82E70E972734007800F6A8A7 /* CustomTextField.swift in Sources */,
 				82E70E9927354D2500F6A8A7 /* RegistrationViewModel.swift in Sources */,
 				827FF1E527283BF2007E6B84 /* Extensions+UIView.swift in Sources */,
 				827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */,
