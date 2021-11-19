@@ -17,23 +17,38 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
             })
             
             setViewControllers([controllers.first!], direction: .forward, animated: false)
+            
+            setupBarViews()
+            
         }
     }
     
-    var controllers = [UIViewController]()
+    fileprivate let barStackView = UIStackView(arrangedSubviews: [])
+    fileprivate let diselectedBarColor = UIColor(white: 0, alpha: 0.1)
     
-//    let controllers = [
-//        photoController(image: UIImage(named: "like_circle")!),
-//        photoController(image: UIImage(named: "super_like_circle")!),
-//        photoController(image: UIImage(named: "dismiss_circle")!),
-//    ]
+    func setupBarViews() {
+        cardViewModel.imageUrls.forEach { url in
+            let barView = UIView()
+            barView.backgroundColor = diselectedBarColor
+            barView.layer.cornerRadius = 2
+            barStackView.addArrangedSubview(barView)
+        }
+        
+        barStackView.subviews[0].backgroundColor = .white
+        view.addSubview(barStackView)
+        barStackView.distribution = .fillEqually
+        barStackView.spacing = 4
+        barStackView.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 8, left: 9, bottom: 0, right: 8), size: .init(width: 0, height: 4))
+        
+    }
+    
+    var controllers = [UIViewController]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         dataSource = self
         delegate = self
         view.backgroundColor = .white
-        
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -48,11 +63,21 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let index = self.controllers.firstIndex(where: {$0 == viewController}) ?? 0
         if index == controllers.count - 1 {
-            return nil
+            return nil   
         }
         return controllers[index + 1]
-        
     }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        let currentViewController = viewControllers?.first
+        if let index = controllers.firstIndex(where: {$0 == currentViewController}) {
+            barStackView.subviews.forEach { subview in
+                subview.backgroundColor = diselectedBarColor
+            }
+            barStackView.subviews[index].backgroundColor = .white
+        }
+    }
+    
 }
 
 

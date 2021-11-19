@@ -25,6 +25,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         super.viewDidAppear(animated)
         if Auth.auth().currentUser == nil {
             let loginController = LoginController()
+            
             loginController.delegate = self
             let navController = UINavigationController(rootViewController: loginController)
             navController.modalPresentationStyle = .fullScreen
@@ -68,7 +69,6 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             hud.dismiss(afterDelay: 2)
             return
         }
-//        let query = Firestore.firestore().collection("users").order(by: "uid").start(after: [lastUser?.uid ?? ""]).limit(to: 2)
         let query = Firestore.firestore().collection("users")
             .whereField("age", isLessThanOrEqualTo: maxAge)
             .whereField("age", isGreaterThanOrEqualTo: minAge)
