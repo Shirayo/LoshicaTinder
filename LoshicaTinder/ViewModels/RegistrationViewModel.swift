@@ -52,7 +52,7 @@ class RegistrationViewModel {
                 let imageUrl = url?.absoluteString ?? ""
                 self.isRegistering.value = false
                 self.saveInfoToFireStore(imageUrl: imageUrl, completion: completion)
-
+                completion(nil)
 //                print("download url of our image is: ", url?.absoluteString ?? "")
                 
             }
@@ -64,7 +64,10 @@ class RegistrationViewModel {
         let docData: [String: Any] = [
             "fullName": fullname ?? "",
             "uid": uid,
-            "images": [imageUrl]
+            "images": [imageUrl, "", ""],
+            "age": 18,
+            "minSeekingAge": SettingsController.defaultMinSeekingAge,
+            "maxSeekingAge": SettingsController.defaultMaxSeekingAge
         ]
         Firestore.firestore().collection("users").document(uid).setData(docData) { error in
             if let err = error {
@@ -75,7 +78,7 @@ class RegistrationViewModel {
     }
     
     func checkFormValidity() {
-        let isValid = fullname?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false
+        let isValid = fullname?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && image.value != nil
         self.isFormValid.value = isValid
     }
     

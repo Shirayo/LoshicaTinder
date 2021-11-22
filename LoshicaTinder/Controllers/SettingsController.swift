@@ -23,6 +23,9 @@ protocol SettingsControllerDelegate {
 
 class SettingsController: UITableViewController {
    
+    static let defaultMinSeekingAge = 18
+    static let defaultMaxSeekingAge = 35
+    
     var delegate: SettingsControllerDelegate?
     
     class HeaderLabel: UILabel {
@@ -161,8 +164,8 @@ class SettingsController: UITableViewController {
                 "profession": user?.profession ?? "",
                 "images": user?.images ?? [""],
                 "age": user?.age ?? -1,
-                "minSeekingAge": user?.minSeekingAge ?? 18,
-                "maxSeekingAge": user?.maxSeekingAge ?? 100
+                "minSeekingAge": user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge,
+                "maxSeekingAge": user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
             ]
             Firestore.firestore().collection("users").document(uid).setData(savedData) { error in
                 if let _ = error {

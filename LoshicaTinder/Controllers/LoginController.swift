@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 import JGProgressHUD
 
 protocol LoginControllerDelegate {
@@ -81,7 +82,7 @@ class LoginController: UIViewController {
     
     fileprivate let backToRegisterButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Go back", for: .normal)
+        button.setTitle("don't have an account?", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
@@ -89,9 +90,18 @@ class LoginController: UIViewController {
     }()
     
     @objc fileprivate func handleBack() {
-        navigationController?.popViewController(animated: true)
+        let registrationController = RegistrationController()
+        navigationController?.pushViewController(registrationController, animated: true)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        if Auth.auth().currentUser != nil {
+            self.dismiss(animated: true, completion: {
+                self.delegate?.didFinishLoggingIn()
+            })
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -27,7 +27,7 @@ class RegistrationController: UIViewController {
     
     let goToLoginButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Go to login", for: .normal)
+        button.setTitle("back to login", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(handleGoToLogin), for: .touchUpInside)
@@ -94,6 +94,7 @@ class RegistrationController: UIViewController {
     
     let registrationViewModel = RegistrationViewModel()
     
+    var delegate: LoginControllerDelegate?
     
     //MARK: override functions
     
@@ -191,8 +192,7 @@ class RegistrationController: UIViewController {
     //MARK: handling functions
     
     @objc fileprivate func handleGoToLogin() {
-        let loginController = LoginController()
-        navigationController?.pushViewController(loginController, animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc fileprivate func handleTapDismiss() {
@@ -237,12 +237,13 @@ class RegistrationController: UIViewController {
     
     @objc fileprivate func handleRegister() {
         self.handleTapDismiss()
-            registrationViewModel.performRegistration { error in
+        registrationViewModel.performRegistration { error in
             if let err = error {
-                print(err)
+                print("hehehhehe:", err)
                 self.showHUDWithError(error: err)
                 return
             }
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
@@ -270,6 +271,7 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.originalImage] as? UIImage
         self.registrationViewModel.image.value = image
+        registrationViewModel.checkFormValidity()
         self.dismiss(animated: true, completion: nil)
     }
 }

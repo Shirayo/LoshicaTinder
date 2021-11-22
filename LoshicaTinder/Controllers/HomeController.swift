@@ -18,7 +18,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     var cardViewModels = [CardViewModel]()
     var user: User?
     var lastUser: User?
-    
+    var topCardView: CardView?
+
     //MARK: override functions
     
     override func viewDidAppear(_ animated: Bool) {
@@ -40,6 +41,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         setupFireStoreUserCards()
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
+        bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+
         fetchCurrentUser()
     }
     
@@ -63,12 +66,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Loading users"
         hud.show(in: self.view)
-        guard let minAge = user?.minSeekingAge, let maxAge = user?.maxSeekingAge else {
-            hud.textLabel.text = "Please enter seeking age in settings"
-            hud.indicatorView = JGProgressHUDErrorIndicatorView()
-            hud.dismiss(afterDelay: 2)
-            return
-        }
+        
+        let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
+        let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
+
+        
         let query = Firestore.firestore().collection("users")
             .whereField("age", isLessThanOrEqualTo: maxAge)
             .whereField("age", isGreaterThanOrEqualTo: minAge)
@@ -85,13 +87,24 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 print(err)
                 return
             }
+            
+            //linked list
+            var previousCardView: CardView?
+            
             snapshot?.documents.forEach({ documentSnapshot in
                 let userDictionary = documentSnapshot.data()
                 let user = User(from: userDictionary)
                 if user.uid != self.user?.uid {
                     self.cardViewModels.append(user.toCardViewModel())
                     self.lastUser = user
-                    self.setupCardFromUser(user: user)
+                    let cardView = self.setupCardFromUser(user: user)
+                    
+                    previousCardView?.nextCardView = cardView
+                    previousCardView = cardView
+                    
+                    if self.topCardView == nil {
+                        self.topCardView = cardView
+                    }
                 }
             })
         }
@@ -99,13 +112,14 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     //MARK: setup functions
     
-    fileprivate func setupCardFromUser(user: User) {
+    fileprivate func setupCardFromUser(user: User) -> CardView {
         let cardView = CardView(frame: .zero)
         cardView.delegate = self
         cardView.cardViewModel = user.toCardViewModel()
         cardsDeckView.addSubview(cardView)
         cardsDeckView.sendSubviewToBack(cardView)
         cardView.fillSuperView()
+        return cardView
     }
     
     fileprivate func setupFireStoreUserCards() {
@@ -146,6 +160,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         fetchCurrentUser()
     }
     
+    func didRemoveCard() {
+        self.topCardView?.removeFromSuperview()
+        self.topCardView = self.topCardView?.nextCardView
+    }
+    
     //MARK: handle functions
     
     @objc func handleSettings() {
@@ -159,6 +178,17 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     @objc fileprivate func handleRefresh() {
         cardViewModels = []
         fetchUsersFromFireStore()
+    }
+    
+    @objc fileprivate func handleLike() {
+        let angle = 15 * CGFloat.pi / 180
+        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+            self.topCardView?.transform = CGAffineTransform(translationX: 600, y: 0).rotated(by: angle)
+        } completion: { _ in
+            self.topCardView?.removeFromSuperview()
+            self.topCardView = self.topCardView?.nextCardView
+        }
+
     }
     
 }
