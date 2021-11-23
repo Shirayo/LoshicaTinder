@@ -25,6 +25,7 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
     
     fileprivate let barStackView = UIStackView(arrangedSubviews: [])
     fileprivate let diselectedBarColor = UIColor(white: 0, alpha: 0.1)
+    var topCardView: CardView?
     
     
     func setupBarViews() {
@@ -130,8 +131,6 @@ class SwipingPhotosController: UIPageViewController, UIPageViewControllerDataSou
 class photoController: UIViewController {
     
     let imageView = UIImageView(image: UIImage(named: "like_circle")!)
-    
-        
 
     init(imageUrl: String) {
         if let url = URL(string: imageUrl) {

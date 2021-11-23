@@ -182,8 +182,8 @@
 			children = (
 				82E70E902731168A00F6A8A7 /* CardViewModel.swift */,
 				82E70E9827354D2500F6A8A7 /* RegistrationViewModel.swift */,
-				82E70E9C27395E2E00F6A8A7 /* Observable.swift */,
 				82E70EAC2743F30700F6A8A7 /* LoginViewModel.swift */,
+				82E70E9C27395E2E00F6A8A7 /* Observable.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";

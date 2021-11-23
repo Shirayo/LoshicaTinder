@@ -1,6 +1,6 @@
 //
 //  Extensions+UIView.swift
-//  SwipeFoodFirestore
+//
 //
 //  Created by Vasily Mordus on 26.10.21.
 //

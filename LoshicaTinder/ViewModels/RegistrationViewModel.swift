@@ -17,6 +17,11 @@ class RegistrationViewModel {
     var isFormValid = Observable<Bool>()
     var isRegistering = Observable<Bool>()
     
+    func checkFormValidity() {
+        let isValid = fullname?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && image.value != nil
+        self.isFormValid.value = isValid
+    }
+    
     func performRegistration(completion: @escaping (Error?) -> ()) {
         guard let email = email, let password = password else { return }
         isRegistering.value = true
@@ -53,8 +58,6 @@ class RegistrationViewModel {
                 self.isRegistering.value = false
                 self.saveInfoToFireStore(imageUrl: imageUrl, completion: completion)
                 completion(nil)
-//                print("download url of our image is: ", url?.absoluteString ?? "")
-                
             }
         }
     }
@@ -64,7 +67,9 @@ class RegistrationViewModel {
         let docData: [String: Any] = [
             "fullName": fullname ?? "",
             "uid": uid,
-            "images": [imageUrl, "", ""],
+            "imageUrl1": imageUrl,
+            "imageUrl2": "",
+            "imageUrl3": "",
             "age": 18,
             "minSeekingAge": SettingsController.defaultMinSeekingAge,
             "maxSeekingAge": SettingsController.defaultMaxSeekingAge
@@ -75,11 +80,6 @@ class RegistrationViewModel {
                 return
             }
         }
-    }
-    
-    func checkFormValidity() {
-        let isValid = fullname?.isEmpty == false && email?.isEmpty == false && password?.isEmpty == false && image.value != nil
-        self.isFormValid.value = isValid
     }
     
 }

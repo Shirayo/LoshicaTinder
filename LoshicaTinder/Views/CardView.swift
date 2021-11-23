@@ -25,17 +25,21 @@ class CardView: UIView {
     
     var delegate: CardViewDelegate?
     var nextCardView: CardView?
+    
+    let moreInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
+        return button
+    }()
 
     var cardViewModel: CardViewModel! {
         didSet {
-//            let imageName = cardViewModel.imageUrls.first ?? ""
-//            let imageUrl = URL(string: imageName)
-//            imageView.sd_setImage(with: imageUrl, completed: nil)
             swipingPhotoController.cardViewModel = self.cardViewModel
             
             informationLabel.attributedText = cardViewModel.attibuterdText
             informationLabel.textAlignment = cardViewModel.textAligment
-            (0..<cardViewModel.imageUrls.count).forEach { (_) in
+            (0..<cardViewModel.imageUrls.count).forEach { (i) in
                 let barView = UIView()
                 barView.backgroundColor = diselectedBarColor
                 barView.layer.cornerRadius = 2
@@ -67,22 +71,12 @@ class CardView: UIView {
     
     fileprivate func  setupIndexImageObserver() {
         cardViewModel.imageIndexObserver = { [weak self] (index, url) in
-            
-//            self?.imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "image_placeholder"), options: .continueInBackground)
-
             self?.barStackView.arrangedSubviews.forEach { bar in
                 bar.backgroundColor = self?.diselectedBarColor
             }
             self?.barStackView.arrangedSubviews[index].backgroundColor = .white
         }
     }
-    
-    let moreInfoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(handleMoreInfo), for: .touchUpInside)
-        return button
-    }()
     
     fileprivate func setupLayout() {
         layer.cornerRadius = 10
@@ -101,11 +95,10 @@ class CardView: UIView {
         informationLabel.anchor(top: nil, leading: self.leadingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 16, right: 16))
         addSubview(moreInfoButton)
         moreInfoButton.anchor(top: nil, leading: nil, bottom: self.bottomAnchor, trailing: trailingAnchor, padding: .init(top: 0, left: 0, bottom: 16, right: 16), size: .init(width: 44, height: 44))
-//        setupBarsStackView()
     }
     
     
-    fileprivate func setupBarsStackView() {
+    fileprivate func setupBarStackView() {
         addSubview(barStackView)
         barStackView.anchor(top: topAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 8, left: 8, bottom: 0, right: 8), size: .init(width: 0, height: 4))
         barStackView.spacing = 4
@@ -172,6 +165,8 @@ class CardView: UIView {
             print("completed animation")
         }
     }
+    
+    //MARK: required
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

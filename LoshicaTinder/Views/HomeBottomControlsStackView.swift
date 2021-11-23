@@ -19,7 +19,7 @@ class HomeBottomControlsStackView: UIStackView {
     }
     
     let refreshButton = createButton(image: UIImage(named: "refresh_circle"))
-    let dismissButton = createButton(image: UIImage(named: "dismiss_circle"))
+    let dislikeButton = createButton(image: UIImage(named: "dismiss_circle"))
     let superLikeButton = createButton(image: UIImage(named: "super_like_circle"))
     let likeButton = createButton(image: UIImage(named: "like_circle"))
     let boostButton = createButton(image: UIImage(named: "boost_circle"))
@@ -32,7 +32,7 @@ class HomeBottomControlsStackView: UIStackView {
 
         let subViews = [
             refreshButton,
-            dismissButton,
+            dislikeButton,
             superLikeButton,
             likeButton,
             boostButton,

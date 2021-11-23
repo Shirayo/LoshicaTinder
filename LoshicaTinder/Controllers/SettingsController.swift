@@ -11,7 +11,7 @@ import Firebase
 import SDWebImage
 import JGProgressHUD
 
-class CustomImagePcikerController: UIImagePickerController {
+class CustomImagePickerController: UIImagePickerController {
     
     var imageButton: UIButton?
     
@@ -48,8 +48,9 @@ class SettingsController: UITableViewController {
     lazy var image2Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var image3Button = createButton(selector: #selector(handleSelectPhoto))
     lazy var imageButtons = [image1Button, image2Button, image3Button]
-    var isImageChanged = [false, false, false]
     
+    var isImageChanged = [false, false, false]
+    var user: User?
     lazy var header: UIView = {
         let header = UIView()
         let padding: CGFloat = 16
@@ -64,14 +65,7 @@ class SettingsController: UITableViewController {
         stackView.anchor(top: header.topAnchor, leading: image1Button.trailingAnchor, bottom: header.bottomAnchor, trailing: header.trailingAnchor, padding: .init(top: padding, left: padding, bottom: padding, right: padding))
         return header
     }()
-
-
-    @objc fileprivate func handleSelectPhoto(button: UIButton) {
-        let picker = CustomImagePcikerController()
-        picker.delegate = self
-        picker.imageButton = button
-        present(picker, animated: true, completion: nil)
-    }
+    let dispatchGroup = DispatchGroup()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -83,7 +77,6 @@ class SettingsController: UITableViewController {
         fetchCurrentUser()
         
     }
-    var user: User?
     
     fileprivate func fetchCurrentUser() {
         guard let userUid = Auth.auth().currentUser?.uid else { return }
@@ -100,11 +93,25 @@ class SettingsController: UITableViewController {
     }
     
     fileprivate func loadUserPhotos() {
-        guard let images = self.user?.images else { return }
-        for i in 0..<images.count {
-            guard let imageUrl = URL(string: images[i]) else { return }
-            SDWebImageManager.shared.loadImage(with: imageUrl, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
-                self.imageButtons[i].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        if let imageString = user?.imageUrl1, let imageUrl1 = URL(string: imageString) {
+            print("found image1")
+            SDWebImageManager.shared.loadImage(with: imageUrl1, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.image1Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        
+        if let imageString = user?.imageUrl2, let imageUrl2 = URL(string: imageString) {
+            print("found image2")
+            SDWebImageManager.shared.loadImage(with: imageUrl2, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.image2Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+        
+        if let imageString = user?.imageUrl3, let imageUrl3 = URL(string: imageString) {
+            print("found image3")
+            SDWebImageManager.shared.loadImage(with: imageUrl3, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.image3Button.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
             }
         }
     }
@@ -118,78 +125,46 @@ class SettingsController: UITableViewController {
             UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(handleLogout))
         ]
     }
-
-    let dispatchGroup = DispatchGroup()
     
-    fileprivate func saveToStorage() {
-        for i in 0..<imageButtons.count {
-            if isImageChanged[i] == true {
-                let filename = UUID().uuidString
-                let ref = Storage.storage().reference(withPath: "/images/\(filename)")
-                if let image = self.imageButtons[i].imageView?.image, let imageData = image.jpegData(compressionQuality: 0.75)  {
-                    self.dispatchGroup.enter()
-                    ref.putData(imageData, metadata: nil) { (_, error) in
-                        if let err = error {
-                            print("error: \(err)")
-                            return
-                        }
-                        self.dispatchGroup.enter()
-                        ref.downloadURL { url, error in
-                            if let err = error {
-                                print("error: \(err)")
-                                return
-                            }
-                            let imageUrl = url?.absoluteString ?? ""
-                            self.user?.images[i] = imageUrl
-                            self.dispatchGroup.leave()
-                        }
-                        self.dispatchGroup.leave()
-                    }
-                }
-            }
-        }
-        isImageChanged = [false, false, false]
-    } 
-        
-    @objc fileprivate func handleSave() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        let hud = JGProgressHUD.init(style: .dark)
-        hud.textLabel.text = "saving"
-        hud.show(in: self.view)
-        self.saveToStorage()
-        dispatchGroup.notify(queue: DispatchQueue.main) { [unowned self] in
-            let savedData: [String: Any] = [
-                "uid": uid,
-                "fullName": user?.name ?? "",
-                "profession": user?.profession ?? "",
-                "images": user?.images ?? [""],
-                "age": user?.age ?? -1,
-                "minSeekingAge": user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge,
-                "maxSeekingAge": user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
-            ]
-            Firestore.firestore().collection("users").document(uid).setData(savedData) { error in
-                if let _ = error {
-                    hud.textLabel.text = "error in saving data"
-                    hud.indicatorView = JGProgressHUDErrorIndicatorView()
-                    hud.dismiss(afterDelay: 1.5)
-                } else {
-                    hud.textLabel.text = "data saved successfully"
-                    hud.indicatorView = JGProgressHUDSuccessIndicatorView()
-                    hud.dismiss(afterDelay: 1)
-                }
-            }
-            self.dismiss(animated: true) {
-                self.delegate?.didSavedSettings()
-            }
-        }
-    }
+//    fileprivate func saveToStorage() {
+//        let filename = UUID().uuidString
+//        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+//        imageButtons.forEach { button in
+//            if let image = button.imageView?.image, let imageData = image.jpegData(compressionQuality: 0.75) {
+//                self.dispatchGroup.enter()
+//                ref.putData(imageData, metadata: nil) { (_, error) in
+//                    if let err = error {
+//                        print("error: \(err)")
+//                        return
+//                    }
+//                    self.dispatchGroup.enter()
+//                    ref.downloadURL { url, error in
+//                        if let err = error {
+//                            print("error: \(err)")
+//                            return
+//                        }
+//                        let imageUrl = url?.absoluteString ?? ""
+//                        if button == self.image1Button {
+//                            print("heh1")
+//                            self.user?.imageUrl1 = imageUrl
+//                        } else if button == self.image2Button {
+//                            print("heh2")
+//                            self.user?.imageUrl2 = imageUrl
+//                        } else {
+//                            print("heh3")
+//                            self.user?.imageUrl3 = imageUrl
+//                        }
+//                        self.dispatchGroup.leave()
+//                    }
+//                    self.dispatchGroup.leave()
+//
+//                }
+//            }
+//        }
+//
+//    }
     
-    @objc fileprivate func handleLogout() {
-        try? Auth.auth().signOut()
-        self.dismiss(animated: true)
-    }
-    
-    //MARK: override functions
+    //MARK: tableView datasource/delegate functions
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section == 0 {
@@ -264,6 +239,8 @@ class SettingsController: UITableViewController {
         return cell
     }
     
+    //MARK: handle functions
+    
     @objc fileprivate func handleNameChange(textField: UITextField) {
         self.user?.name = textField.text
     }
@@ -278,6 +255,53 @@ class SettingsController: UITableViewController {
     
     @objc fileprivate func handleBack() {
         self.dismiss(animated: true)
+    }
+    
+    @objc fileprivate func handleSave() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let hud = JGProgressHUD.init(style: .dark)
+        hud.textLabel.text = "saving"
+        hud.show(in: self.view)
+//        self.saveToStorage()
+        dispatchGroup.notify(queue: DispatchQueue.main) { [unowned self] in
+            let savedData: [String: Any] = [
+                "uid": uid,
+                "fullName": user?.name ?? "",
+                "profession": user?.profession ?? "",
+                "imageUrl1": user?.imageUrl1 ?? "",
+                "imageUrl2": user?.imageUrl2 ?? "",
+                "imageUrl3": user?.imageUrl3 ?? "",
+                "age": user?.age ?? -1,
+                "minSeekingAge": user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge,
+                "maxSeekingAge": user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
+            ]
+            Firestore.firestore().collection("users").document(uid).setData(savedData) { error in
+                if let _ = error {
+                    hud.textLabel.text = "error in saving data"
+                    hud.indicatorView = JGProgressHUDErrorIndicatorView()
+                    hud.dismiss(afterDelay: 1.5)
+                } else {
+                    hud.textLabel.text = "data saved successfully"
+                    hud.indicatorView = JGProgressHUDSuccessIndicatorView()
+                    hud.dismiss(afterDelay: 1)
+                }
+            }
+            self.dismiss(animated: true) {
+                self.delegate?.didSavedSettings()
+            }
+        }
+    }
+    
+    @objc fileprivate func handleLogout() {
+        try? Auth.auth().signOut()
+        self.dismiss(animated: true)
+    }
+    
+    @objc fileprivate func handleSelectPhoto(button: UIButton) {
+        let picker = CustomImagePickerController()
+        picker.delegate = self
+        picker.imageButton = button
+        present(picker, animated: true, completion: nil)
     }
     
     @objc fileprivate func HandleMinAgeSliderValueChanged(slider: UISlider) {
@@ -306,20 +330,53 @@ class SettingsController: UITableViewController {
     
 }
 
+//MARK: extensions
+
 extension SettingsController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let image = info[.originalImage] as? UIImage
-        guard let selectedButton = (picker as? CustomImagePcikerController)?.imageButton else { return }
-        guard let imageIndex = imageButtons.firstIndex(of: selectedButton) else { return }
-        imageButtons[imageIndex].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
-        isImageChanged[imageIndex] = true
+        let selectedImage = info[.originalImage] as? UIImage
+        let imageButton = (picker as? CustomImagePickerController)?.imageButton
+        imageButton?.setImage(selectedImage?.withRenderingMode(.alwaysOriginal), for: .normal)
+        dismiss(animated: true)
         
-        print(imageIndex, isImageChanged)
-
-        self.dismiss(animated: true, completion: nil)
+        let filename = UUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/images/\(filename)")
+        guard let uploadData = selectedImage?.jpegData(compressionQuality: 0.75) else { return }
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Uploading image..."
+        hud.show(in: view)
+        ref.putData(uploadData, metadata: nil) { (nil, err) in
+            if let err = err {
+                hud.dismiss()
+                print("Failed to upload image to storage:", err)
+                return
+            }
+            
+            print("Finished uploading image")
+            ref.downloadURL(completion: { (url, err) in
+                
+                hud.dismiss()
+                
+                if let err = err {
+                    print("Failed to retrieve download URL:", err)
+                    return
+                }
+                
+                print("Finished getting download url:", url?.absoluteString ?? "")
+                
+                if imageButton == self.image1Button {
+                    self.user?.imageUrl1 = url?.absoluteString ?? ""
+                } else if imageButton == self.image2Button {
+                    self.user?.imageUrl2 = url?.absoluteString ?? ""
+                } else {
+                    self.user?.imageUrl3 = url?.absoluteString ?? ""
+                }
+            })
+        }
     }
 }

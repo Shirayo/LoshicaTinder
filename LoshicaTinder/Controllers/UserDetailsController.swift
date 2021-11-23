@@ -17,15 +17,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         return sv
     }()
     
-//    let imageView: UIImageView = {
-//        let img = UIImageView()
-//        img.image = UIImage(named: "nikita1")
-//        img.contentMode = .scaleAspectFill // .scaleAspectFill
-//        return img
-//    }()
-    
-    
-    
     let label: UILabel = {
        let label = UILabel()
         label.text = "TEST TEST"
@@ -50,7 +41,6 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
     
     let swipingPhotosController = SwipingPhotosController()
     
-    
     lazy var dislikeButton = createButton(image: UIImage(named: "dismiss_circle")!, selector: #selector(handleDislike))
     lazy var superLikeButton = createButton(image: UIImage(named: "super_like_circle")!, selector: #selector(handleDislike))
     lazy var likeButton = createButton(image: UIImage(named: "like_circle")!, selector: #selector(handleDislike))
@@ -63,6 +53,9 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         btn.imageView?.contentMode = .scaleToFill
         return btn
     }
+    
+    
+    //MARK: override functions
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -78,6 +71,8 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         setupVisualBlur()
         setupBottomControls()
     }
+    
+    //MARK: setup functions
     
     fileprivate func setupLayout() {
         view.addSubview(scrollView)
@@ -110,27 +105,28 @@ class UserDetailsController: UIViewController, UIScrollViewDelegate {
         bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
+    //MARK: handle functions
+    
     @objc fileprivate func handleDislike() {
         print("dislike")
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        
-        let yOffset = -scrollView.contentOffset.y
-        
-        var width =  self.view.frame.width + yOffset
-        width = max(self.view.frame.width, width)
-        
-        var height = self.view.frame.height / 2 + yOffset
-        height = max(self.view.frame.height / 2, height)
-        
-        let swipingView = swipingPhotosController.view!
-        swipingView.frame = CGRect(x: min(0, -yOffset / 2), y: min(0, -yOffset), width: width , height: height)
     }
     
     @objc fileprivate func handleTapDismiss() {
         self.dismiss(animated: true)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+        let yOffset = -scrollView.contentOffset.y
+
+        var width =  self.view.frame.width + yOffset
+        width = max(self.view.frame.width, width)
+
+        var height = self.view.frame.height / 2 + yOffset
+        height = max(self.view.frame.height / 2, height)
+
+        let swipingView = swipingPhotosController.view!
+        swipingView.frame = CGRect(x: min(0, -yOffset / 2), y: min(0, -yOffset), width: width , height: height)
+    }
     
 }

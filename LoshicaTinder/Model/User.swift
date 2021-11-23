@@ -14,7 +14,11 @@ struct User: ProdusesCardViewModel {
     var name: String?
     var age: Int?
     var profession: String?
-    var images: [String]
+    var imageUrl1: String
+    var imageUrl2: String
+    var imageUrl3: String
+
+
     var uid: String?
     var minSeekingAge: Int?
     var maxSeekingAge: Int?
@@ -23,7 +27,12 @@ struct User: ProdusesCardViewModel {
         self.age = dictionary["age"] as? Int
         self.profession = dictionary["profession"] as? String ?? ""
         self.name = dictionary["fullName"] as? String ?? ""
-        self.images = dictionary["images"] as? [String] ?? [""]
+//        self.images = dictionary["images"] as? [String] ?? [""]
+        
+        self.imageUrl1 = dictionary["imageUrl1"] as? String ?? ""
+        self.imageUrl2 = dictionary["imageUrl2"] as? String ?? ""
+        self.imageUrl3 = dictionary["imageUrl3"] as? String ?? ""
+
         self.uid = dictionary["uid"] as? String ?? ""
         self.minSeekingAge = dictionary["minSeekingAge"] as? Int
         self.maxSeekingAge = dictionary["maxSeekingAge"] as? Int
@@ -39,7 +48,14 @@ struct User: ProdusesCardViewModel {
         
         information.append(NSAttributedString(string: "  \(ageString)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
         information.append(NSAttributedString(string: "\n\(professionString)", attributes: [.font: UIFont.systemFont(ofSize: 24, weight: .medium)]))
-
+        
+        var images = [String]()
+        [imageUrl1, imageUrl2, imageUrl3].forEach { imageUrl in
+            if imageUrl != "" {
+                images.append(imageUrl)
+            }
+        }
+        
         return CardViewModel(imageNames: images, attibuterdText: information, textAligment: .left)
     }
 }

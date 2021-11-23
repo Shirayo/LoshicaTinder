@@ -96,6 +96,8 @@ class RegistrationController: UIViewController {
     
     var delegate: LoginControllerDelegate?
     
+    let registerHUD = JGProgressHUD(style: .dark)
+    
     //MARK: override functions
     
     override func viewWillAppear(_ animated: Bool) {
@@ -246,9 +248,7 @@ class RegistrationController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
     }
-    
-    let registerHUD = JGProgressHUD(style: .dark)
-    
+        
     fileprivate func showHUDWithError(error: Error) {
         self.registerHUD.dismiss(animated: true)
         let hud = JGProgressHUD(style: .dark)

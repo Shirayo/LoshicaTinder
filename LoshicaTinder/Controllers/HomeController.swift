@@ -42,6 +42,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
+        bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
 
         fetchCurrentUser()
     }
@@ -50,6 +51,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     fileprivate func fetchCurrentUser() {
         guard let userUid = Auth.auth().currentUser?.uid else { return }
+        cardsDeckView.subviews.forEach({$0.removeFromSuperview()})
         Firestore.firestore().collection("users").document(userUid).getDocument { docSnapshot, error in
             if let err = error {
                 print(err)
@@ -66,10 +68,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Loading users"
         hud.show(in: self.view)
-        
         let minAge = user?.minSeekingAge ?? SettingsController.defaultMinSeekingAge
         let maxAge = user?.maxSeekingAge ?? SettingsController.defaultMaxSeekingAge
-
+        topCardView = nil
         
         let query = Firestore.firestore().collection("users")
             .whereField("age", isLessThanOrEqualTo: maxAge)
@@ -141,7 +142,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         overallStackView.bringSubviewToFront(cardsDeckView)
     }
 
-    //MARK: delegates
+    //MARK: delegate functions
     
     func didTapMoreInfo(cardViewModel: CardViewModel) {
         let userDetailsController = UserDetailsController()
@@ -176,19 +177,40 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
         
     @objc fileprivate func handleRefresh() {
-        cardViewModels = []
         fetchUsersFromFireStore()
     }
     
     @objc fileprivate func handleLike() {
-        let angle = 15 * CGFloat.pi / 180
-        UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
-            self.topCardView?.transform = CGAffineTransform(translationX: 600, y: 0).rotated(by: angle)
-        } completion: { _ in
+        performSwipeAnimation(translation: 700, angle: 15)
+    }
+    
+    @objc fileprivate func handleDislike() {
+        performSwipeAnimation(translation: -700, angle: -15)
+    }
+    
+    fileprivate func performSwipeAnimation(translation: CGFloat, angle: CGFloat) {
+        let translationAnimation = CABasicAnimation(keyPath: "position.x")
+        translationAnimation.toValue = translation
+        translationAnimation.duration = 0.3
+        translationAnimation.fillMode = .forwards
+        translationAnimation.isRemovedOnCompletion = false
+        
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = angle * CGFloat.pi / 180
+        rotationAnimation.duration = 1
+        
+        let cardView = topCardView
+        topCardView = cardView?.nextCardView
+        
+        CATransaction.setCompletionBlock {
             self.topCardView?.removeFromSuperview()
-            self.topCardView = self.topCardView?.nextCardView
         }
+        
+        cardView?.layer.add(translationAnimation, forKey: "translation")
+        cardView?.layer.add(rotationAnimation, forKey: "rotation")
 
+        CATransaction.commit()
+       
     }
     
 }

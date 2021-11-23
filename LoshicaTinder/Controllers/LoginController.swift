@@ -16,6 +16,9 @@ protocol LoginControllerDelegate {
 class LoginController: UIViewController {
     
     var delegate: LoginControllerDelegate?
+    let gradientLayer = CAGradientLayer()
+    fileprivate let loginViewModel = LoginViewModel()
+    fileprivate var loginHUD = JGProgressHUD(style: .dark)
     
     let emailTextField: CustomTextField = {
         let tf = CustomTextField(padding: 24, height: 50)
@@ -24,6 +27,7 @@ class LoginController: UIViewController {
         tf.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         return tf
     }()
+    
     let passwordTextField: CustomTextField = {
         let tf = CustomTextField(padding: 24, height: 50)
         tf.placeholder = "Enter password"
@@ -43,14 +47,6 @@ class LoginController: UIViewController {
         return sv
     }()
     
-    @objc fileprivate func handleTextChange(textField: UITextField) {
-        if textField == emailTextField {
-            loginViewModel.email = textField.text
-        } else {
-            loginViewModel.password = textField.text
-        }
-    }
-    
     let loginButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Login", for: .normal)
@@ -65,21 +61,6 @@ class LoginController: UIViewController {
         return button
     }()
     
-    @objc fileprivate func handleLogin() {
-        loginViewModel.performLogin { (err) in
-            self.loginHUD.dismiss()
-            if let err = err {
-                print("Failed to log in:", err)
-                return
-            }
-            
-            print("Logged in successfully")
-            self.dismiss(animated: true, completion: {
-                self.delegate?.didFinishLoggingIn()
-            })
-        }
-    }
-    
     fileprivate let backToRegisterButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("don't have an account?", for: .normal)
@@ -89,10 +70,7 @@ class LoginController: UIViewController {
         return button
     }()
     
-    @objc fileprivate func handleBack() {
-        let registrationController = RegistrationController()
-        navigationController?.pushViewController(registrationController, animated: true)
-    }
+    //MARK: override functions
 
     override func viewWillAppear(_ animated: Bool) {
         if Auth.auth().currentUser != nil {
@@ -111,8 +89,12 @@ class LoginController: UIViewController {
         setupBindables()
     }
     
-    fileprivate let loginViewModel = LoginViewModel()
-    fileprivate let loginHUD = JGProgressHUD(style: .dark)
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        gradientLayer.frame = view.bounds
+    }
+    
+    //MARK: setup functions
     
     fileprivate func setupBindables() {
         loginViewModel.isFormValid.bind { [unowned self] (isFormValid) in
@@ -123,19 +105,13 @@ class LoginController: UIViewController {
         }
         loginViewModel.isLoggingIn.bind { [unowned self] (isRegistering) in
             if isRegistering == true {
+                self.loginHUD = JGProgressHUD(style: .dark)
                 self.loginHUD.textLabel.text = "Register"
                 self.loginHUD.show(in: self.view)
             } else {
                 self.loginHUD.dismiss()
             }
         }
-    }
-    
-    let gradientLayer = CAGradientLayer()
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        gradientLayer.frame = view.bounds
     }
     
     fileprivate func setupGradientLayer() {
@@ -157,5 +133,37 @@ class LoginController: UIViewController {
         view.addSubview(backToRegisterButton)
         backToRegisterButton.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor)
     }
+    
+    //MARK: handle functions
+    
+    @objc fileprivate func handleTextChange(textField: UITextField) {
+        if textField == emailTextField {
+            loginViewModel.email = textField.text
+        } else {
+            loginViewModel.password = textField.text
+        }
+    }
 
+    @objc fileprivate func handleBack() {
+        let registrationController = RegistrationController()
+        navigationController?.pushViewController(registrationController, animated: true)
+    }
+    
+    @objc fileprivate func handleLogin() {
+        loginViewModel.performLogin { (err) in
+            if let err = err {
+                print("Failed to log in:", err)
+                self.loginHUD.indicatorView = JGProgressHUDErrorIndicatorView()
+                self.loginHUD.textLabel.text = "Failed"
+                self.loginHUD.dismiss(afterDelay: 0.5)
+                return
+            }
+            self.loginHUD.dismiss()
+            print("Logged in successfully")
+            self.dismiss(animated: true, completion: {
+                self.delegate?.didFinishLoggingIn()
+            })
+        }
+    }
+    
 }
