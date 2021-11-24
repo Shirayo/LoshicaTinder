@@ -111,7 +111,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 let user = User(from: userDictionary)
                 
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
-                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+//                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
+                let hasNotSwipedBefore = true
                 if isNotCurrentUser && hasNotSwipedBefore {
                     self.cardViewModels.append(user.toCardViewModel())
                     self.lastUser = user
@@ -242,14 +243,16 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 print("error to save swipe data ", err)
                 return
             }
+           
             if snapshot?.exists == true {
                 Firestore.firestore().collection("swipes").document(uid).updateData(documentData) { error in
                     if let err = error {
                         print("error to save swipe data ", err)
                         return
                     }
-                    print("Succesfully updated swipe...")
-                    self.checkIfMatchExists(cardUID: cardUID)
+                    if didLike {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
                 }
             } else {
                 Firestore.firestore().collection("swipes").document(uid).setData(documentData) { error in
@@ -257,8 +260,9 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                         print("error to save swipe data ", err)
                         return
                     }
-                    print("Succesfully saved swipe...")
-                    self.checkIfMatchExists(cardUID: cardUID)
+                    if didLike {
+                        self.checkIfMatchExists(cardUID: cardUID)
+                    }
                 }
             }
         }
@@ -275,11 +279,16 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             guard let currentUserUid = Auth.auth().currentUser?.uid else { return }
             let hasMatched = data[currentUserUid] as? Int == 1
              if hasMatched {
-                print("match!!!!")
-            } else {
-                print("not match")
+                 print("match!!!!")
+                 self.presentMatchView(cardUid: cardUID)
             }
         }
+    }
+    
+    fileprivate func presentMatchView(cardUid: String) {
+        let redview = MatchView()
+        view.addSubview(redview)
+        redview.fillSuperView()
     }
     
 }
