@@ -19,7 +19,7 @@ class CardViewModel {
     let imageUrls: [String]
     let attibuterdText: NSAttributedString
     let textAligment: NSTextAlignment
-    
+    let uid: String
     var imageIndexObserver: ((Int, URL) -> ())?
     
     fileprivate var imageIndex = 0 {
@@ -31,10 +31,11 @@ class CardViewModel {
         }
     }
     
-    init(imageNames: [String], attibuterdText: NSAttributedString, textAligment: NSTextAlignment) {
+    init(imageNames: [String], attibuterdText: NSAttributedString, textAligment: NSTextAlignment, uid: String) {
         self.imageUrls = imageNames
         self.attibuterdText = attibuterdText
         self.textAligment = textAligment
+        self.uid = uid
     }
     
     func advanceNextPhoto() {

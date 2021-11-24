@@ -154,15 +154,18 @@ class CardView: UIView {
         let shouldDismissCard = Int(abs(gesture.translation(in: nil).x)) > border
         let translationDirection: CGFloat = gesture.translation(in: nil).x > 0 ? 1 : -1
         
-        UIView.animate(withDuration: 0.4 , delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
-            if shouldDismissCard {
-                self.transform = CGAffineTransform(translationX: 600 * translationDirection, y: 0)
-                self.delegate?.didRemoveCard()
+        guard let homeController = self.delegate as? HomeController else { return }
+        
+        if shouldDismissCard {
+            if translationDirection == 1 {
+                homeController.handleLike()
             } else {
-                self.transform = .identity
+                homeController.handleDislike()
             }
-        } completion: { (_) in
-            print("completed animation")
+        } else {
+            UIView.animate(withDuration: 0.4 , delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+                self.transform = .identity
+            }   
         }
     }
     

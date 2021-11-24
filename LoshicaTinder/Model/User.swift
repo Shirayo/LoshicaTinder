@@ -56,6 +56,6 @@ struct User: ProdusesCardViewModel {
             }
         }
         
-        return CardViewModel(imageNames: images, attibuterdText: information, textAligment: .left)
+        return CardViewModel(imageNames: images, attibuterdText: information, textAligment: .left, uid: self.uid ?? "")
     }
 }
