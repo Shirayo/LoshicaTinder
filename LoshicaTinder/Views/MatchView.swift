@@ -6,8 +6,42 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import Firebase
 
 class MatchView: UIView {
+    
+    var currentUser: User! {
+        didSet {
+        }
+    }
+    
+    var cardUID: String! {
+        didSet {
+            
+            Firestore.firestore().collection("users").document(cardUID).getDocument { snapshot, error in
+                if let err = error {
+                    print(err)
+                    return
+                }
+                
+                guard let dictionary = snapshot?.data() else { return }
+                let user = User(from: dictionary)
+                guard let url = URL(string: user.imageUrl1) else { return }
+                self.cardUserImageView.sd_setImage(with: url)
+
+                self.matchLabel.text = "you and \(user.name ?? "") have liked each other"
+                
+                guard let currentUserImageUrl = URL(string: self.currentUser.imageUrl1) else { return }
+                self.currentUserimageView.sd_setImage(with: currentUserImageUrl) { _, _, _, _ in
+                    self.cardUserImageView.alpha = 1
+                    self.currentUserimageView.alpha = 1
+                    self.setupAnimations()
+                }
+                
+            }
+        }
+    }
 
     fileprivate let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     
@@ -17,6 +51,7 @@ class MatchView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
+//        imageView.alpha = 0
         return imageView
     }()
     
@@ -26,6 +61,7 @@ class MatchView: UIView {
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
         imageView.layer.borderColor = UIColor.white.cgColor
+//        imageView.alpha = 0
         return imageView
     }()
     
@@ -57,20 +93,25 @@ class MatchView: UIView {
         let btn = KeepSwipingButton(type: .system)
         btn.setTitle("Keep Swiping", for: .normal)
         btn.setTitleColor(.white, for: .normal)
+        btn.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
         return btn
     }()
+    
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setBlurView()
         setupLayout()
-        setupAnimations()
     }
     
     fileprivate func setupAnimations() {
         //init starting positions
         let degrees: CGFloat = 30
         let angle: CGFloat = degrees * .pi / 180
+        
+         views.forEach { $0.alpha = 1}
+        
         currentUserimageView.transform = CGAffineTransform(translationX: 200, y: 0).rotated(by: angle)
         cardUserImageView.transform = CGAffineTransform(translationX: -200, y: 0).rotated(by: -angle)
         
@@ -90,12 +131,9 @@ class MatchView: UIView {
             self.sendMessageButton.transform = CGAffineTransform(translationX: 0, y: 0)
             self.keepSwipingButton.transform = CGAffineTransform(translationX: 0, y: 0)
         }
-
-
     }
     
     fileprivate func setBlurView() {
-        visualEffectView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismiss)))
         addSubview(visualEffectView)
         visualEffectView.fillSuperView()
         alpha = 0
@@ -105,13 +143,20 @@ class MatchView: UIView {
       
     }
     
+    lazy var views = [
+        currentUserimageView,
+        cardUserImageView,
+        matchLabel,
+        itsaMatchImageView,
+        sendMessageButton,
+        keepSwipingButton
+    ]
+    
     fileprivate func setupLayout() {
-        addSubview(currentUserimageView)
-        addSubview(cardUserImageView)
-        addSubview(matchLabel)
-        addSubview(itsaMatchImageView)
-        addSubview(sendMessageButton)
-        addSubview(keepSwipingButton)
+        views.forEach { v in
+            addSubview(v)
+            v.alpha = 0
+        }
         
         currentUserimageView.anchor(top: nil, leading: nil, bottom: nil, trailing: centerXAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 8), size: .init(width: 140, height: 140))
         currentUserimageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true

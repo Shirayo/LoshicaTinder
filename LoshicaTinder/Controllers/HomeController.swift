@@ -286,9 +286,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     }
     
     fileprivate func presentMatchView(cardUid: String) {
-        let redview = MatchView()
-        view.addSubview(redview)
-        redview.fillSuperView()
+        let matchView = MatchView()
+        matchView.cardUID = cardUid
+        matchView.currentUser = user
+        view.addSubview(matchView)
+        matchView.fillSuperView()
     }
     
 }
