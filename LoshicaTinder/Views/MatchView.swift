@@ -9,9 +9,9 @@ import UIKit
 
 class MatchView: UIView {
 
-    let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    fileprivate let visualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
     
-    let currentUserimageView: UIImageView = {
+    fileprivate let currentUserimageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "saveliy1"))
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -20,7 +20,7 @@ class MatchView: UIView {
         return imageView
     }()
     
-    let cardUserImageView: UIImageView = {
+    fileprivate let cardUserImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "saveliy2"))
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -29,14 +29,14 @@ class MatchView: UIView {
         return imageView
     }()
     
-    let itsaMatchImageView: UIImageView = {
+    fileprivate let itsaMatchImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "it_is_a_match"))
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         return imageView
     }()
     
-    let matchLabel: UILabel = {
+    fileprivate let matchLabel: UILabel = {
        let label = UILabel()
         label.text = "you and ___ have liked each other"
         label.font = UIFont.systemFont(ofSize: 18)
@@ -64,6 +64,34 @@ class MatchView: UIView {
         super.init(frame: frame)
         setBlurView()
         setupLayout()
+        setupAnimations()
+    }
+    
+    fileprivate func setupAnimations() {
+        //init starting positions
+        let degrees: CGFloat = 30
+        let angle: CGFloat = degrees * .pi / 180
+        currentUserimageView.transform = CGAffineTransform(translationX: 200, y: 0).rotated(by: angle)
+        cardUserImageView.transform = CGAffineTransform(translationX: -200, y: 0).rotated(by: -angle)
+        
+        sendMessageButton.transform = CGAffineTransform(translationX: 400, y: 0)
+        keepSwipingButton.transform = CGAffineTransform(translationX: -400, y: 0)
+        
+        UIView.animate(withDuration: 0.5  , delay: 0, options: .curveEaseOut) {
+            self.currentUserimageView.transform = CGAffineTransform(translationX: 0, y: 0).rotated(by: angle)
+            self.cardUserImageView.transform = CGAffineTransform(translationX: 0, y: 0).rotated(by: -angle)
+        } completion: { (_) in
+            UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut) {
+                self.currentUserimageView.transform = CGAffineTransform.init(rotationAngle: 0)
+                self.cardUserImageView.transform = CGAffineTransform.init(rotationAngle: 0)
+            }
+        }
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.8, options: .curveEaseOut) {
+            self.sendMessageButton.transform = CGAffineTransform(translationX: 0, y: 0)
+            self.keepSwipingButton.transform = CGAffineTransform(translationX: 0, y: 0)
+        }
+
+
     }
     
     fileprivate func setBlurView() {
@@ -100,7 +128,7 @@ class MatchView: UIView {
         
         sendMessageButton.anchor(top: currentUserimageView.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 32, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 50))
          
-        keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 16, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 50))
+        keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, leading: leadingAnchor, bottom: nil, trailing: trailingAnchor, padding: .init(top: 16, left: 48, bottom: 0, right: 48), size: .init(width: 0, height: 50 ))
     }
     
     @objc fileprivate func handleDismiss() {
