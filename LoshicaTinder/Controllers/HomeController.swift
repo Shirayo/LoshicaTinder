@@ -36,10 +36,14 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBar.isHidden = true
+        
         view.backgroundColor = .white
         setupLayout()
         setupFireStoreUserCards()
         topStackView.settingsButton.addTarget(self, action: #selector(handleSettings), for: .touchUpInside)
+        topStackView.messageButton.addTarget(self, action: #selector(handleMessages), for: .touchUpInside)
+
         bottomControls.refreshButton.addTarget(self, action: #selector(handleRefresh), for: .touchUpInside)
         bottomControls.likeButton.addTarget(self, action: #selector(handleLike), for: .touchUpInside)
         bottomControls.dislikeButton.addTarget(self, action: #selector(handleDislike), for: .touchUpInside)
@@ -192,6 +196,11 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         let navController = UINavigationController(rootViewController: settingsController)
         navController.modalPresentationStyle = .fullScreen
         present(navController, animated: true)
+    }
+    
+    @objc fileprivate func handleMessages() {
+        let vc = MatchMessagesController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(vc, animated: true)
     }
         
     @objc fileprivate func handleRefresh() {
