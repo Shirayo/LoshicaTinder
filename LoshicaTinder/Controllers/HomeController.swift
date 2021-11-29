@@ -12,7 +12,7 @@ import JGProgressHUD
 
 class HomeController: UIViewController, SettingsControllerDelegate, LoginControllerDelegate, CardViewDelegate {
     
-    let topStackView = TopNavigationStackView()
+    let topStackView = HomeTopNavigationStackView()
     let cardsDeckView = UIView()
     let bottomControls = HomeBottomControlsStackView()
     var cardViewModels = [CardViewModel]()

@@ -12,6 +12,7 @@
 		82755C1E274F78DF0018B691 /* KeepSwipingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C1D274F78DF0018B691 /* KeepSwipingButton.swift */; };
 		82755C212750CD050018B691 /* MatchMessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C202750CD050018B691 /* MatchMessagesController.swift */; };
 		82755C232750DB380018B691 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C222750DB380018B691 /* UILabel.swift */; };
+		82755C252754AE3E0018B691 /* MatchesTopNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */; };
 		827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */; };
 		827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */; };
 		827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D32727FAB3007E6B84 /* HomeController.swift */; };
@@ -20,7 +21,7 @@
 		827FF1DC2727FAB5007E6B84 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 827FF1DA2727FAB5007E6B84 /* LaunchScreen.storyboard */; };
 		827FF1E527283BF2007E6B84 /* UIview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1E427283BF2007E6B84 /* UIview.swift */; };
 		82BE12CB27292B0200DDE023 /* HomeBottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CA27292B0200DDE023 /* HomeBottomControlsStackView.swift */; };
-		82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */; };
+		82BE12CD2729402100DDE023 /* HomeTopNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CC2729402100DDE023 /* HomeTopNavigationStackView.swift */; };
 		82BE12CF2729565E00DDE023 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82BE12CE2729565E00DDE023 /* CardView.swift */; };
 		82CC1A6D2744E4C700BA4216 /* UserDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CC1A6C2744E4C700BA4216 /* UserDetailsController.swift */; };
 		82CC1A6F2746416B00BA4216 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CC1A6E2746416B00BA4216 /* CustomTextField.swift */; };
@@ -47,6 +48,7 @@
 		82755C1D274F78DF0018B691 /* KeepSwipingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepSwipingButton.swift; sourceTree = "<group>"; };
 		82755C202750CD050018B691 /* MatchMessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchMessagesController.swift; sourceTree = "<group>"; };
 		82755C222750DB380018B691 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesTopNavigationBar.swift; sourceTree = "<group>"; };
 		827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoshicaTinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -57,7 +59,7 @@
 		827FF1DD2727FAB5007E6B84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		827FF1E427283BF2007E6B84 /* UIview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIview.swift; sourceTree = "<group>"; };
 		82BE12CA27292B0200DDE023 /* HomeBottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBottomControlsStackView.swift; sourceTree = "<group>"; };
-		82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopNavigationStackView.swift; sourceTree = "<group>"; };
+		82BE12CC2729402100DDE023 /* HomeTopNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTopNavigationStackView.swift; sourceTree = "<group>"; };
 		82BE12CE2729565E00DDE023 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		82CC1A6C2744E4C700BA4216 /* UserDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsController.swift; sourceTree = "<group>"; };
 		82CC1A6E2746416B00BA4216 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -165,7 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				82BE12CA27292B0200DDE023 /* HomeBottomControlsStackView.swift */,
-				82BE12CC2729402100DDE023 /* TopNavigationStackView.swift */,
+				82BE12CC2729402100DDE023 /* HomeTopNavigationStackView.swift */,
 				82BE12CE2729565E00DDE023 /* CardView.swift */,
 				82E70EA0273D15C800F6A8A7 /* SettingsCell.swift */,
 				82E70EA22742984E00F6A8A7 /* AgeRangeCell.swift */,
@@ -174,6 +176,7 @@
 				82755C19274E63880018B691 /* MatchView.swift */,
 				82755C1B274F71A80018B691 /* SendMessageButton.swift */,
 				82755C1D274F78DF0018B691 /* KeepSwipingButton.swift */,
+				82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -334,6 +337,7 @@
 				82CC1A6F2746416B00BA4216 /* CustomTextField.swift in Sources */,
 				82755C212750CD050018B691 /* MatchMessagesController.swift in Sources */,
 				827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */,
+				82755C252754AE3E0018B691 /* MatchesTopNavigationBar.swift in Sources */,
 				82BE12CB27292B0200DDE023 /* HomeBottomControlsStackView.swift in Sources */,
 				82E70EA32742984F00F6A8A7 /* AgeRangeCell.swift in Sources */,
 				82CC1A6D2744E4C700BA4216 /* UserDetailsController.swift in Sources */,
@@ -342,7 +346,7 @@
 				82E70E9F273CEA2600F6A8A7 /* SettingsController.swift in Sources */,
 				82E70E952733B7F000F6A8A7 /* RegistrationController.swift in Sources */,
 				82755C232750DB380018B691 /* UILabel.swift in Sources */,
-				82BE12CD2729402100DDE023 /* TopNavigationStackView.swift in Sources */,
+				82BE12CD2729402100DDE023 /* HomeTopNavigationStackView.swift in Sources */,
 				82755C1C274F71A80018B691 /* SendMessageButton.swift in Sources */,
 				82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */,
 				82E70E9927354D2500F6A8A7 /* RegistrationViewModel.swift in Sources */,

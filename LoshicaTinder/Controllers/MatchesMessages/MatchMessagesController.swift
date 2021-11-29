@@ -7,44 +7,68 @@
 
 import UIKit
 
-class MatchMessagesController: UICollectionViewController {
+class MatchCell: UICollectionViewCell {
+    
+    let profileImageView = UIImageView(image: UIImage(named: "nikita3"))
+    let usernameLabel = UILabel(text: "Username Here", font: .systemFont(ofSize: 14), textColor: .black, textAlignment: .center, numberOfLines: 2)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.translatesAutoresizingMaskIntoConstraints = false
+        profileImageView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        profileImageView.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        profileImageView.layer.cornerRadius = 80 / 2
+        profileImageView.clipsToBounds = true
+        let profileStackView = UIStackView(arrangedSubviews: [profileImageView, usernameLabel])
+        profileStackView.axis = .vertical
+        
+        addSubview(profileStackView)
+        profileStackView.fillSuperView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
-    let customNavBar: UIView = {
-        let navbar = UIView()
-        navbar.backgroundColor = .white
+class MatchMessagesController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+
+    let customNavBar = MatchesTopNavigationBar()
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return items.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! MatchCell
+        print(indexPath.row)
         
-        let messagesLabel = UILabel(text: "Messages", font: UIFont.systemFont(ofSize: 20), textColor: .black, textAlignment: .center, numberOfLines: 0)
-        let feedLabel = UILabel(text: "Feed", font: UIFont.systemFont(ofSize: 20), textColor: .black, textAlignment: .center, numberOfLines: 0)
-        let topStackView = UIStackView(arrangedSubviews: [messagesLabel, feedLabel])
-        topStackView.distribution = .fillEqually
-        topStackView.axis = .horizontal
-        topStackView.backgroundColor = .red
-        let iconImageView = UIImageView(image: UIImage(named: "top_right_messages"))
-        iconImageView.contentMode = .scaleAspectFit
-        iconImageView.translatesAutoresizingMaskIntoConstraints = false
-        iconImageView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        cell.backgroundColor = colors[indexPath.row]
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return .init(width: 80, height: 120)
+    }
+    
         
-        let stackView = UIStackView(arrangedSubviews: [iconImageView, topStackView])
-        stackView.distribution = .fillEqually
-        stackView.axis = .vertical
-        navbar.addSubview(stackView)
-        stackView.fillSuperView()
-        
-        return navbar
-    }()
+    var items = ["TEST1", "TEST2", "TEST3", "TEST4",]
+    var colors: [UIColor] = [UIColor.red, .blue, .green, .orange]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.backgroundColor = .white
-        
+        collectionView.register(MatchCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.contentInset.top = 150
         view.addSubview(customNavBar)
         customNavBar.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.leadingAnchor, bottom: nil, trailing: self.view.trailingAnchor, padding: .zero, size: .init(width: 0, height: 140))
-        customNavBar.layer.shadowColor = UIColor.lightGray.cgColor
-        customNavBar.layer.shadowOpacity = 0.2
-        customNavBar.layer.shadowOffset = CGSize(width: 0, height: 10)
-        customNavBar.layer.shadowRadius = 8
+        customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+
     }
 
-    
+    @objc fileprivate func handleBack() {
+        navigationController?.popViewController(animated: true)
+    }
     
 }
