@@ -82,6 +82,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
         }
     }
     
+    var users = [String: User]()
+    
     fileprivate func fetchUsersFromFireStore() {
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Loading users"
@@ -113,6 +115,8 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             snapshot?.documents.forEach({ documentSnapshot in
                 let userDictionary = documentSnapshot.data()
                 let user = User(from: userDictionary)
+                
+                self.users[user.uid ?? ""] = user
                 
                 let isNotCurrentUser = user.uid != Auth.auth().currentUser?.uid
 //                let hasNotSwipedBefore = self.swipes[user.uid!] == nil
@@ -287,9 +291,29 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
             guard let data = snapshot?.data() else { return }
             guard let currentUserUid = Auth.auth().currentUser?.uid else { return }
             let hasMatched = data[currentUserUid] as? Int == 1
-             if hasMatched {
-                 print("match!!!!")
-                 self.presentMatchView(cardUid: cardUID)
+            if hasMatched {
+                print("match!!!!")
+                 
+                self.presentMatchView(cardUid: cardUID)
+                guard let cardUser = self.users[cardUID] else { return }
+                guard let currentUser = self.user else { return }
+
+                
+                let otherUserData: [String: Any] = ["name": cardUser.name ?? "", "imageUrl": cardUser.imageUrl1, "uid ": cardUID, "timestamp": Timestamp(date: Date())]
+                Firestore.firestore().collection("matches_messages").document(currentUserUid).collection("matches").document(cardUID).setData(otherUserData) { error in
+                    if let err = error {
+                        print(err)
+                        return
+                    }
+                }
+                
+                let currentUserData: [String: Any] = ["name": currentUser.name ?? "", "imageUrl": currentUser.imageUrl1 , "uid ": currentUserUid, "timestamp": Timestamp(date: Date())]
+                Firestore.firestore().collection("matches_messages").document(cardUID).collection("matches").document(currentUserUid).setData(currentUserData) { error in
+                    if let err = error {
+                        print(err)
+                        return
+                    }
+                }
             }
         }
     }
