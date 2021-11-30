@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1016693657436-soipevhugm53ob7gndlfci0undtve82g.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1016693657436-soipevhugm53ob7gndlfci0undtve82g</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAbJFOJTK3hpSgdeLdKGf27iod4dcKtQ8E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1016693657436</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Shirayo.LoshicaTinder</string>
+	<key>PROJECT_ID</key>
+	<string>loshicatinder</string>
+	<key>STORAGE_BUCKET</key>
+	<string>loshicatinder.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1016693657436:ios:763c70b3b1d02deb27fb99</string>
+</dict>
+</plist>
