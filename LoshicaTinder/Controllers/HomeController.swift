@@ -70,14 +70,17 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
     var swipes = [String: Int]()
     
     fileprivate func fetchSwipes() {
+        print("fetching swipes")
         guard let uid = Auth.auth().currentUser?.uid else { return }
+        print("fetching swipes2")
         Firestore.firestore().collection("swipes").document(uid).getDocument { snapshot, error in
             if let err = error {
-                print(err)
+                print("oops,", err)
                 return
             }
             guard let data = snapshot?.data() as? [String: Int] else { return }
             self.swipes = data
+            print("fetched swipes")
             self.fetchUsersFromFireStore()
         }
     }

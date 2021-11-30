@@ -74,6 +74,7 @@ class RegistrationViewModel {
             "minSeekingAge": SettingsController.defaultMinSeekingAge,
             "maxSeekingAge": SettingsController.defaultMaxSeekingAge
         ]
+        Firestore.firestore().collection("swipes").document(uid).setData([:])
         Firestore.firestore().collection("users").document(uid).setData(docData) { error in
             if let err = error {
                 completion(err)

@@ -104,8 +104,15 @@ class MatchMessagesController: UICollectionViewController, UICollectionViewDeleg
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return .init(width: 80, height: 120)
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: 16, left: 16, bottom: 16, right: 16)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let match = users[indexPath.row]
+        let chatLogControler = ChatLogController(match: match)
+        navigationController?.pushViewController(chatLogControler, animated: true)
     }
 
     @objc fileprivate func handleBack() {

@@ -38,6 +38,8 @@
 		82E70EAD2743F30700F6A8A7 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70EAC2743F30700F6A8A7 /* LoginViewModel.swift */; };
 		82E70EAF2743F33400F6A8A7 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82E70EAE2743F33400F6A8A7 /* LoginController.swift */; };
 		849B0D812755FACD00CE8D9A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 849B0D802755FACD00CE8D9A /* GoogleService-Info.plist */; };
+		849B0D832756043500CE8D9A /* ChatLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849B0D822756043500CE8D9A /* ChatLogController.swift */; };
+		849B0D862756216000CE8D9A /* MessagesNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 849B0D852756215F00CE8D9A /* MessagesNavBar.swift */; };
 		FC40AD96D1E3D428E79717CA /* Pods_LoshicaTinder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCAE4E9512408227D79C6481 /* Pods_LoshicaTinder.framework */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +78,8 @@
 		82E70EAC2743F30700F6A8A7 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		82E70EAE2743F33400F6A8A7 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		849B0D802755FACD00CE8D9A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		849B0D822756043500CE8D9A /* ChatLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogController.swift; sourceTree = "<group>"; };
+		849B0D852756215F00CE8D9A /* MessagesNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesNavBar.swift; sourceTree = "<group>"; };
 		BCAE4E9512408227D79C6481 /* Pods_LoshicaTinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LoshicaTinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF991AD9D6E6745C906E15B0 /* Pods-LoshicaTinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LoshicaTinder.debug.xcconfig"; path = "Target Support Files/Pods-LoshicaTinder/Pods-LoshicaTinder.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -166,6 +170,7 @@
 		82BE12C927292ACC00DDE023 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				849B0D842756214600CE8D9A /* MatchesMessages */,
 				82BE12CA27292B0200DDE023 /* HomeBottomControlsStackView.swift */,
 				82BE12CC2729402100DDE023 /* HomeTopNavigationStackView.swift */,
 				82BE12CE2729565E00DDE023 /* CardView.swift */,
@@ -199,6 +204,7 @@
 				82E70E9E273CEA2600F6A8A7 /* SettingsController.swift */,
 				82E70EAE2743F33400F6A8A7 /* LoginController.swift */,
 				82CC1A6C2744E4C700BA4216 /* UserDetailsController.swift */,
+				849B0D822756043500CE8D9A /* ChatLogController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -212,6 +218,14 @@
 				82E70E9C27395E2E00F6A8A7 /* Observable.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		849B0D842756214600CE8D9A /* MatchesMessages */ = {
+			isa = PBXGroup;
+			children = (
+				849B0D852756215F00CE8D9A /* MessagesNavBar.swift */,
+			);
+			path = MatchesMessages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -354,8 +368,10 @@
 				827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */,
 				82E70EA1273D15C800F6A8A7 /* SettingsCell.swift in Sources */,
 				82755C1E274F78DF0018B691 /* KeepSwipingButton.swift in Sources */,
+				849B0D832756043500CE8D9A /* ChatLogController.swift in Sources */,
 				82E70EAD2743F30700F6A8A7 /* LoginViewModel.swift in Sources */,
 				82E70E912731168A00F6A8A7 /* CardViewModel.swift in Sources */,
+				849B0D862756216000CE8D9A /* MessagesNavBar.swift in Sources */,
 				82CC1A7127464AEC00BA4216 /* SwipingPhotosController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
