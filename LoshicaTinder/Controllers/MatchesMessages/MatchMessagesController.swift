@@ -13,10 +13,12 @@ struct Match {
     
     let name: String
     let profileImageUrl: String
+    let uid: String
     
     init(from dict: [String: Any]) {
         self.name = dict["name"] as? String ?? ""
         self.profileImageUrl = dict["imageUrl"] as? String ?? ""
+        self.uid = dict["uid"] as? String ?? ""
     }
 }
 
@@ -72,9 +74,9 @@ class MatchMessagesController: UICollectionViewController, UICollectionViewDeleg
                 return
             }
             querySnapshot?.documents.forEach({ documentSnapshot in
+                print(documentSnapshot.data())
                 let dictionary = documentSnapshot.data()
                 self.users.append(Match(from: dictionary))
-                print(documentSnapshot.data())
             })
             self.collectionView.reloadData()
         }

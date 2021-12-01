@@ -302,7 +302,7 @@ class HomeController: UIViewController, SettingsControllerDelegate, LoginControl
                 guard let currentUser = self.user else { return }
 
                 
-                let otherUserData: [String: Any] = ["name": cardUser.name ?? "", "imageUrl": cardUser.imageUrl1, "uid ": cardUID, "timestamp": Timestamp(date: Date())]
+                let otherUserData: [String: Any] = ["name": cardUser.name ?? "", "imageUrl": cardUser.imageUrl1, "uid": cardUID, "timestamp": Timestamp(date: Date())]
                 Firestore.firestore().collection("matches_messages").document(currentUserUid).collection("matches").document(cardUID).setData(otherUserData) { error in
                     if let err = error {
                         print(err)

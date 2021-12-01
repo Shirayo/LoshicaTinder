@@ -7,10 +7,21 @@
 
 import Foundation
 import UIKit
+import Firebase
+import FirebaseFirestore
 
 struct Message {
-    let text: String
+    let text, fromUid, toUid: String
+    let timestamp: Timestamp
     let isFromCurrentUser: Bool
+    
+    init(from dict: [String: Any]) {
+        self.text = dict["text"] as? String ?? ""
+        self.fromUid = dict["fromUid"] as? String ?? ""
+        self.toUid = dict["toUid"] as? String ?? ""
+        self.timestamp = dict["text"] as? Timestamp ?? Timestamp(date: Date())
+        self.isFromCurrentUser = Auth.auth().currentUser?.uid == self.fromUid
+    }
 }
 
 class MessageCell: UICollectionViewCell {
@@ -73,26 +84,22 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     fileprivate lazy var customNavBar = MessagesNavBar(match: self.match)
     fileprivate let navBarHeight: CGFloat = 100
-    var messages: [Message] = [
-        Message(text: "hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus hello from Vasily Shirayo Mordus ", isFromCurrentUser: true),
-        Message(text: "hello from Vasily Shirayo Mordus", isFromCurrentUser: false),
-        Message(text: "hello", isFromCurrentUser: true)
-    ]
-    
     fileprivate let match: Match
+    fileprivate var messages = [Message]()
+    fileprivate lazy var customInputView: CustomInputAccessView = {
+        let civ = CustomInputAccessView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 50))
+        civ.sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+        return civ
+    }()
     
     init(match: Match) {
         self.match = match
         super.init(collectionViewLayout: UICollectionViewFlowLayout() )
     }
-        
-    lazy var redView: UIView = {
-        return CustomInputAccessView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 50))
-    }()
     
     override var inputAccessoryView: UIView? {
         get {
-           return redView
+           return customInputView
         }
     }
 
@@ -102,10 +109,70 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         collectionView.keyboardDismissMode = .interactive
         setupUI()
+        fetchMessages()
     }
     
+    @objc fileprivate func handleKeyboardShow() {
+        self.collectionView.scrollToItem(at: [0, messages.count - 1], at: .bottom, animated: true)
+    }
+    
+    fileprivate func fetchMessages() {
+        messages = []
+        guard let currentUserUid = Auth.auth().currentUser?.uid else { return }
+        let query = Firestore.firestore().collection("matches_messages").document(currentUserUid).collection(match.uid).order(by: "timestamp")
+        
+        query.addSnapshotListener { querySnapshot, error in
+            if let err = error {
+                print(err)
+                return
+            }
+            
+            querySnapshot?.documentChanges.forEach({ change in
+                if change.type == .added {
+                    let dict = change.document.data()
+                    self.messages.append(.init(from: dict))
+                }
+                                                   
+                
+            })
+            self.collectionView.reloadData()
+            self.collectionView.scrollToItem(at: [0, self.messages.count - 1], at: .bottom, animated: true)
+
+        }
+
+    }
+    
+    @objc func handleSend() {
+        guard let textToSend = customInputView.textView.text else { return }
+        guard let currentUsedUid = Auth.auth().currentUser?.uid else { return }
+        if textToSend != "" {
+            let data: [String: Any] = ["text": textToSend, "fromUid": currentUsedUid, "toUid": match.uid, "timestamp": Timestamp(date: Date())]
+            
+            let fromCollection = Firestore.firestore().collection("matches_messages").document(currentUsedUid).collection(match.uid)
+            fromCollection.addDocument(data: data) { error in
+                if let err = error {
+                    print(err)
+                    return
+                }
+                print("saved to firestore")
+                self.customInputView.textView.text = ""
+                self.customInputView.placeHolderLabel.isHidden = false
+            }
+            
+            let toCollection = Firestore.firestore().collection("matches_messages").document(match.uid).collection(currentUsedUid)
+            toCollection.addDocument(data: data) { error in
+                if let err = error {
+                    print(err)
+                    return
+                }            
+            }
+        }
+    }
+
+
     fileprivate func setupUI() {
         view.addSubview(customNavBar)
         customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
