@@ -69,8 +69,6 @@ class MessageCell: UICollectionViewCell {
     }
 }
 
-
-
 class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     fileprivate lazy var customNavBar = MessagesNavBar(match: self.match)
@@ -87,9 +85,28 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         self.match = match
         super.init(collectionViewLayout: UICollectionViewFlowLayout() )
     }
+        
+    lazy var redView: UIView = {
+        return CustomInputAccessView(frame: .init(x: 0, y: 0, width: view.frame.width, height: 50))
+    }()
+    
+    override var inputAccessoryView: UIView? {
+        get {
+           return redView
+        }
+    }
+
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.keyboardDismissMode = .interactive
+        setupUI()
+    }
+    
+    fileprivate func setupUI() {
         view.addSubview(customNavBar)
         customNavBar.backButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         collectionView.register(MessageCell.self, forCellWithReuseIdentifier: "messageCell")

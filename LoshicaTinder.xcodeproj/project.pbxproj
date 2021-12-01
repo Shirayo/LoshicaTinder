@@ -13,6 +13,7 @@
 		82755C212750CD050018B691 /* MatchMessagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C202750CD050018B691 /* MatchMessagesController.swift */; };
 		82755C232750DB380018B691 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C222750DB380018B691 /* UILabel.swift */; };
 		82755C252754AE3E0018B691 /* MatchesTopNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */; };
+		82755C2827576DE30018B691 /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2727576DE20018B691 /* CustomInputAccessoryView.swift */; };
 		827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */; };
 		827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */; };
 		827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D32727FAB3007E6B84 /* HomeController.swift */; };
@@ -51,6 +52,7 @@
 		82755C202750CD050018B691 /* MatchMessagesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchMessagesController.swift; sourceTree = "<group>"; };
 		82755C222750DB380018B691 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesTopNavigationBar.swift; sourceTree = "<group>"; };
+		82755C2727576DE20018B691 /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
 		827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoshicaTinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,14 @@
 			path = MatchesMessages;
 			sourceTree = "<group>";
 		};
+		82755C2627576DC50018B691 /* Custom Classes */ = {
+			isa = PBXGroup;
+			children = (
+				82755C2727576DE20018B691 /* CustomInputAccessoryView.swift */,
+			);
+			path = "Custom Classes";
+			sourceTree = "<group>";
+		};
 		827FF1C32727FAB2007E6B84 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +152,7 @@
 		827FF1CE2727FAB3007E6B84 /* LoshicaTinder */ = {
 			isa = PBXGroup;
 			children = (
+				82755C2627576DC50018B691 /* Custom Classes */,
 				82E70E8F2731167100F6A8A7 /* ViewModels */,
 				82E70E8B27301A3200F6A8A7 /* Model */,
 				82BE12C927292ACC00DDE023 /* Views */,
@@ -349,6 +360,7 @@
 				82E70E9327312EFF00F6A8A7 /* Advertiser.swift in Sources */,
 				827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */,
 				82CC1A6F2746416B00BA4216 /* CustomTextField.swift in Sources */,
+				82755C2827576DE30018B691 /* CustomInputAccessoryView.swift in Sources */,
 				82755C212750CD050018B691 /* MatchMessagesController.swift in Sources */,
 				827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */,
 				82755C252754AE3E0018B691 /* MatchesTopNavigationBar.swift in Sources */,
