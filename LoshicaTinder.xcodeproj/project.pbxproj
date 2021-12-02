@@ -14,6 +14,10 @@
 		82755C232750DB380018B691 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C222750DB380018B691 /* UILabel.swift */; };
 		82755C252754AE3E0018B691 /* MatchesTopNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */; };
 		82755C2827576DE30018B691 /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2727576DE20018B691 /* CustomInputAccessoryView.swift */; };
+		82755C2A2758BA550018B691 /* MatchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C292758BA550018B691 /* MatchCell.swift */; };
+		82755C2C2758E6BA0018B691 /* MatchesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2B2758E6BA0018B691 /* MatchesHeaderView.swift */; };
+		82755C2E2758E7210018B691 /* MatchesHorizontalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2D2758E7210018B691 /* MatchesHorizontalController.swift */; };
+		82755C302758E75A0018B691 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2F2758E75A0018B691 /* Match.swift */; };
 		827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */; };
 		827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */; };
 		827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D32727FAB3007E6B84 /* HomeController.swift */; };
@@ -53,6 +57,10 @@
 		82755C222750DB380018B691 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		82755C242754AE3E0018B691 /* MatchesTopNavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesTopNavigationBar.swift; sourceTree = "<group>"; };
 		82755C2727576DE20018B691 /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
+		82755C292758BA550018B691 /* MatchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchCell.swift; sourceTree = "<group>"; };
+		82755C2B2758E6BA0018B691 /* MatchesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHeaderView.swift; sourceTree = "<group>"; };
+		82755C2D2758E7210018B691 /* MatchesHorizontalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHorizontalController.swift; sourceTree = "<group>"; };
+		82755C2F2758E75A0018B691 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoshicaTinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				82755C202750CD050018B691 /* MatchMessagesController.swift */,
+				82755C2D2758E7210018B691 /* MatchesHorizontalController.swift */,
 			);
 			path = MatchesMessages;
 			sourceTree = "<group>";
@@ -202,6 +211,7 @@
 			children = (
 				82E70E8C27301A4300F6A8A7 /* User.swift */,
 				82E70E9227312EFF00F6A8A7 /* Advertiser.swift */,
+				82755C2F2758E75A0018B691 /* Match.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -235,6 +245,8 @@
 			isa = PBXGroup;
 			children = (
 				849B0D852756215F00CE8D9A /* MessagesNavBar.swift */,
+				82755C292758BA550018B691 /* MatchCell.swift */,
+				82755C2B2758E6BA0018B691 /* MatchesHeaderView.swift */,
 			);
 			path = MatchesMessages;
 			sourceTree = "<group>";
@@ -356,6 +368,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				82E70EAF2743F33400F6A8A7 /* LoginController.swift in Sources */,
+				82755C2E2758E7210018B691 /* MatchesHorizontalController.swift in Sources */,
+				82755C2C2758E6BA0018B691 /* MatchesHeaderView.swift in Sources */,
 				82BE12CF2729565E00DDE023 /* CardView.swift in Sources */,
 				82E70E9327312EFF00F6A8A7 /* Advertiser.swift in Sources */,
 				827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */,
@@ -369,6 +383,7 @@
 				82CC1A6D2744E4C700BA4216 /* UserDetailsController.swift in Sources */,
 				82E70E8D27301A4300F6A8A7 /* User.swift in Sources */,
 				82755C1A274E63880018B691 /* MatchView.swift in Sources */,
+				82755C2A2758BA550018B691 /* MatchCell.swift in Sources */,
 				82E70E9F273CEA2600F6A8A7 /* SettingsController.swift in Sources */,
 				82E70E952733B7F000F6A8A7 /* RegistrationController.swift in Sources */,
 				82755C232750DB380018B691 /* UILabel.swift in Sources */,
@@ -377,6 +392,7 @@
 				82E70E9D27395E2E00F6A8A7 /* Observable.swift in Sources */,
 				82E70E9927354D2500F6A8A7 /* RegistrationViewModel.swift in Sources */,
 				827FF1E527283BF2007E6B84 /* UIview.swift in Sources */,
+				82755C302758E75A0018B691 /* Match.swift in Sources */,
 				827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */,
 				82E70EA1273D15C800F6A8A7 /* SettingsCell.swift in Sources */,
 				82755C1E274F78DF0018B691 /* KeepSwipingButton.swift in Sources */,
