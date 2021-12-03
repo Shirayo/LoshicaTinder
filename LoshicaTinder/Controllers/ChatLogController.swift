@@ -58,6 +58,7 @@ class MessageCell: UICollectionViewCell {
         }
     }
     
+    
     var anchoredConstraints: AnchoredConstraints!
 
     
@@ -93,6 +94,9 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         return civ
     }()
     
+    var currentUser: Match?
+
+    
     init(match: Match) {
         self.match = match
         super.init(collectionViewLayout: UICollectionViewFlowLayout() )
@@ -112,6 +116,18 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardShow), name: UIResponder.keyboardDidShowNotification, object: nil)
         collectionView.keyboardDismissMode = .interactive
+        
+        
+        guard let currentUsedUid = Auth.auth().currentUser?.uid else { return }
+        Firestore.firestore().collection("users").document(currentUsedUid).getDocument { documentSnapshot, error in
+            if let err = error {
+                print(err)
+                return
+            }
+            guard let data = documentSnapshot?.data() else { return }
+            self.currentUser = Match(fromUser: data)
+        }
+        
         setupUI()
         fetchMessages()
     }
@@ -148,11 +164,11 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
     
     @objc func handleSend() {
         guard let textToSend = customInputView.textView.text else { return }
-        guard let currentUsedUid = Auth.auth().currentUser?.uid else { return }
+        guard let currentUserUid = Auth.auth().currentUser?.uid else { return }
         if textToSend != "" {
-            let data: [String: Any] = ["text": textToSend, "fromUid": currentUsedUid, "toUid": match.uid, "timestamp": Timestamp(date: Date())]
+            let data: [String: Any] = ["text": textToSend, "fromUid": currentUserUid, "toUid": match.uid, "timestamp": Timestamp(date: Date())]
             
-            let fromCollection = Firestore.firestore().collection("matches_messages").document(currentUsedUid).collection(match.uid)
+            let fromCollection = Firestore.firestore().collection("matches_messages").document(currentUserUid).collection(match.uid)
             fromCollection.addDocument(data: data) { error in
                 if let err = error {
                     print(err)
@@ -163,12 +179,32 @@ class ChatLogController: UICollectionViewController, UICollectionViewDelegateFlo
                 self.customInputView.placeHolderLabel.isHidden = false
             }
             
-            let toCollection = Firestore.firestore().collection("matches_messages").document(match.uid).collection(currentUsedUid)
+            let toCollection = Firestore.firestore().collection("matches_messages").document(match.uid).collection(currentUserUid)
             toCollection.addDocument(data: data) { error in
                 if let err = error {
                     print(err)
                     return
                 }            
+            }
+            
+            let recentMessageData: [String: Any] = ["name": match.name, "text": textToSend, "uid": match.uid, "imageUrl": match.profileImageUrl, "timestamp": Timestamp(date: Date())]
+            let recentMessagePathFrom = Firestore.firestore().collection("matches_messages").document(currentUserUid).collection("recent_messages").document(match.uid)
+            recentMessagePathFrom.setData(recentMessageData) { error in
+                if let err = error {
+                    print(err)
+                    return
+                }
+            }
+            
+            let recentMessageData2: [String: Any] = ["name": currentUser?.name, "text": textToSend, "uid": currentUserUid, "imageUrl": currentUser?.profileImageUrl, "timestamp": Timestamp(date: Date())]
+
+            
+            let recentMessagePathTo = Firestore.firestore().collection("matches_messages").document(match.uid).collection("recent_messages").document(currentUserUid)
+            recentMessagePathTo.setData(recentMessageData2) { error in
+                if let err = error {
+                    print(err)
+                    return
+                }
             }
         }
     }

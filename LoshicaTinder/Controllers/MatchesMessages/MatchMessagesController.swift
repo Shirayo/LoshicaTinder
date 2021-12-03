@@ -10,7 +10,7 @@ import Firebase
 import FirebaseFirestore
 import LBTATools
 
-class RecentMessageCell: LBTAListCell<UIColor> {
+class RecentMessageCell: LBTAListCell<RecentMessage> {
     
     let userProfileImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(named: "nikita1"))
@@ -34,9 +34,11 @@ class RecentMessageCell: LBTAListCell<UIColor> {
         return label
     }()
     
-    override var item: UIColor! {
+    override var item: RecentMessage! {
         didSet {
-//            backgroundColor = item
+            usernameLabel.text = item.name
+            messageTextLabel.text = item.text
+            userProfileImageView.sd_setImage(with: URL(string: item.profileImageUrl))
         }
     }
 
@@ -61,14 +63,13 @@ class RecentMessageCell: LBTAListCell<UIColor> {
     
 }
 
-class MatchMessagesController: LBTAListHeaderController<RecentMessageCell, UIColor, MatchesHeaderView> , UICollectionViewDelegateFlowLayout, MatchesHorizontalControllerDelegate {
+class MatchMessagesController: LBTAListHeaderController<RecentMessageCell, RecentMessage, MatchesHeaderView> , UICollectionViewDelegateFlowLayout, MatchesHorizontalControllerDelegate {
 
     let customNavBar = MatchesTopNavigationBar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        items = [.red, .blue, .green, .purple]
-
+        fetchRecentMessages()
         collectionView.backgroundColor = .white
         setupLayout()
     }
@@ -88,6 +89,24 @@ class MatchMessagesController: LBTAListHeaderController<RecentMessageCell, UICol
     
     override func setupHeader(_ header: MatchesHeaderView) {
         header.matchesHorizontalController.delegate = self
+    }
+    
+    fileprivate func fetchRecentMessages() {
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        Firestore.firestore().collection("matches_messages").document(currentUserId).collection("recent_messages").order(by: "timestamp", descending: true).addSnapshotListener { querySnapshot, error in
+            if let err = error {
+                print(err)
+                return
+            }
+            
+            var recentMessages = [RecentMessage]()
+            
+            querySnapshot?.documents.forEach({ documentSnapshot in
+                let data = documentSnapshot.data()
+                recentMessages.append(.init(from: data))
+            })
+            self.items = recentMessages
+        }
     }
     
     //MARK: datasource/delegate functions
@@ -113,6 +132,10 @@ class MatchMessagesController: LBTAListHeaderController<RecentMessageCell, UICol
         return 0
     }
 
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let chatLogControler = ChatLogController(match: Match(from: items[indexPath.row]))
+        navigationController?.pushViewController(chatLogControler, animated: true)
+    }
     //MARK: handle functions
     
     @objc fileprivate func handleBack() {

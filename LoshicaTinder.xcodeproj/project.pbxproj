@@ -18,6 +18,7 @@
 		82755C2C2758E6BA0018B691 /* MatchesHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2B2758E6BA0018B691 /* MatchesHeaderView.swift */; };
 		82755C2E2758E7210018B691 /* MatchesHorizontalController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2D2758E7210018B691 /* MatchesHorizontalController.swift */; };
 		82755C302758E75A0018B691 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C2F2758E75A0018B691 /* Match.swift */; };
+		82755C32275903F20018B691 /* RecentMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82755C31275903F20018B691 /* RecentMessage.swift */; };
 		827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */; };
 		827FF1D22727FAB3007E6B84 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */; };
 		827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 827FF1D32727FAB3007E6B84 /* HomeController.swift */; };
@@ -61,6 +62,7 @@
 		82755C2B2758E6BA0018B691 /* MatchesHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHeaderView.swift; sourceTree = "<group>"; };
 		82755C2D2758E7210018B691 /* MatchesHorizontalController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesHorizontalController.swift; sourceTree = "<group>"; };
 		82755C2F2758E75A0018B691 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
+		82755C31275903F20018B691 /* RecentMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessage.swift; sourceTree = "<group>"; };
 		827FF1CC2727FAB3007E6B84 /* LoshicaTinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoshicaTinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		827FF1CF2727FAB3007E6B84 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		827FF1D12727FAB3007E6B84 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				82E70E8C27301A4300F6A8A7 /* User.swift */,
 				82E70E9227312EFF00F6A8A7 /* Advertiser.swift */,
 				82755C2F2758E75A0018B691 /* Match.swift */,
+				82755C31275903F20018B691 /* RecentMessage.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				82E70E9327312EFF00F6A8A7 /* Advertiser.swift in Sources */,
 				827FF1D42727FAB3007E6B84 /* HomeController.swift in Sources */,
 				82CC1A6F2746416B00BA4216 /* CustomTextField.swift in Sources */,
+				82755C32275903F20018B691 /* RecentMessage.swift in Sources */,
 				82755C2827576DE30018B691 /* CustomInputAccessoryView.swift in Sources */,
 				82755C212750CD050018B691 /* MatchMessagesController.swift in Sources */,
 				827FF1D02727FAB3007E6B84 /* AppDelegate.swift in Sources */,
